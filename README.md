@@ -5,10 +5,7 @@ springcloud集成+vue前后端分离在线课程
 使用下面的命令将源码从远程仓库拉取到本地，需要本地提前安装好git
 
 ```
-git clone https://git.imooc.com/coding-416/course-online.git
-或
-git clone ssh://git@git.imooc.com:80/coding-416/course-online.git
-```
+git clone https://github.com/GradyLeeY/course.git
 
 ## 项目模块说明
 * **admin**<br>
