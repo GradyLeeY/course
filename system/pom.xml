@@ -40,5 +40,9 @@
             <artifactId>spring-boot-devtools</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.grady</groupId>
+            <artifactId>server</artifactId>
+        </dependency>
     </dependencies>
 </project>
