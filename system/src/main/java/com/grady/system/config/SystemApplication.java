@@ -1,4 +1,4 @@
-package com.grady.system;
+package com.grady.system.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
