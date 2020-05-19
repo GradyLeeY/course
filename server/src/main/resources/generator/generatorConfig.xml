@@ -21,7 +21,7 @@
         </commentGenerator>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/gradyCourse"
+                        connectionURL="jdbc:mysql://localhost:3306/gradycource"
                         userId="root"
                         password="root">
         </jdbcConnection>
@@ -40,7 +40,7 @@
                              type="XMLMAPPER" />
 
 <!--        <table tableName="test" domainObjectName="Test"/>-->
-<!--        <table tableName="chapter" domainObjectName="Chapter"/>-->
+            <table tableName="chapter" domainObjectName="Chapter"/>
 <!--        <table tableName="section" domainObjectName="Section"/>-->
 <!--        <table tableName="course" domainObjectName="Course"/>-->
 <!--        <table tableName="course_content" domainObjectName="CourseContent"/>-->
