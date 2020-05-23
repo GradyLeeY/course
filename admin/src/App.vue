@@ -8,9 +8,9 @@
                             <h1>
                                 <i class="ace-icon fa fa-leaf green"></i>
                                 <span class="red">Ace</span>
-                                <span class="white" id="id-text2">Application</span>
+                                <span class="white" id="id-text2">控台管理</span>
                             </h1>
-                            <h4 class="blue" id="id-company-text">&copy; Company Name</h4>
+                            <h4 class="blue" id="id-company-text">&copy; Company Grady</h4>
                         </div>
 
                         <div class="space-6"></div>
@@ -240,6 +240,30 @@
 
 <script>
     $('body').attr('class', 'login-layout light-login');
+    jQuery(function($) {
+        $('#btn-login-dark').on('click', function(e) {
+            $('body').attr('class', 'login-layout');
+            $('#id-text2').attr('class', 'white');
+            $('#id-company-text').attr('class', 'blue');
+
+            e.preventDefault();
+        });
+        $('#btn-login-light').on('click', function(e) {
+            $('body').attr('class', 'login-layout light-login');
+            $('#id-text2').attr('class', 'grey');
+            $('#id-company-text').attr('class', 'blue');
+
+            e.preventDefault();
+        });
+        $('#btn-login-blur').on('click', function(e) {
+            $('body').attr('class', 'login-layout blur-login');
+            $('#id-text2').attr('class', 'white');
+            $('#id-company-text').attr('class', 'light-blue');
+
+            e.preventDefault();
+        });
+
+    });
 export default {
   name: 'App',
 }
