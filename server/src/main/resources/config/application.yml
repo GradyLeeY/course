@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/gradyCourse?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/gradycource?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
     username: root
     password: root
 
@@ -13,4 +13,4 @@ logging:
           mapper: trace
 
 mybatis:
-  mapper-locations: classpath:/mapper/*.xlm
+  mapper-locations: classpath:/mapper/*.xml
