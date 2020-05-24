@@ -3,6 +3,8 @@ package com.grady.server.mapper;
 import com.grady.server.domain.Chapter;
 import com.grady.server.domain.ChapterExample;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 public interface ChapterMapper {
