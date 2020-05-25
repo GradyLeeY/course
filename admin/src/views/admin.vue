@@ -353,16 +353,16 @@
         </div><!-- /.sidebar-shortcuts -->
 
         <ul class="nav nav-list">
-          <li class="">
-            <a href="index.html">
+          <li class="" id="welcome-sidebar">
+            <router-link to="/admin/welcome">
               <i class="menu-icon fa fa-tachometer"></i>
-              <span class="menu-text"> Welcome </span>
-            </a>
+              <span class="menu-text"> 欢迎 </span>
+            </router-link>
 
             <b class="arrow"></b>
           </li>
 
-          <li class="active open">
+          <li class="">
             <a href="#" class="dropdown-toggle">
               <i class="menu-icon fa fa-list"></i>
               <span class="menu-text"> 系统管理 </span>
@@ -393,6 +393,29 @@
             </ul>
           </li>
 
+          <li class="active open">
+            <a href="#" class="dropdown-toggle">
+              <i class="menu-icon fa fa-list"></i>
+              <span class="menu-text"> 业务管理 </span>
+
+              <b class="arrow fa fa-angle-down"></b>
+            </a>
+
+            <b class="arrow"></b>
+
+            <ul class="submenu">
+              <li class="active" id="business-chapter-sidebar">
+                <router-link to="/admin/business/chapter">
+                  <i class="menu-icon fa fa-caret-right"></i>
+                  大章管理
+                </router-link>
+
+                <b class="arrow"></b>
+              </li>
+
+            </ul>
+          </li>
+
         </ul><!-- /.nav-list -->
 
         <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
@@ -419,12 +442,12 @@
           <div class="footer-content">
 						<span class="bigger-120">
 							<span class="blue bolder">Grady</span>
-							Course Online &copy; 2099-2099
+							Course  Online &copy; 2099-2099
 						</span>
 
             &nbsp; &nbsp;
             <span class="action-buttons">
-							<a href="https://github.com/GradyLeeY/course">
+							<a href="#">
 								<i class="ace-icon fa fa-twitter-square light-blue bigger-150"></i>
 							</a>
 
@@ -449,11 +472,34 @@
 
 <script>
   export default {
-    name: 'admin',
-    mounted: function () {
-      $('body').removeClass('login-layout light-login');
-      $('body').attr('class', 'no-skin');
+    name: "admin",
+    mounted: function() {
+      $("body").removeClass("login-layout light-login");
+      $("body").attr("class", "no-skin");
+      // console.log("admin");
     },
+    methods: {
+      login () {
+        this.$router.push("/admin")
+      },
 
+      /**
+       * 菜单激活样式，id是当前点击的菜单的id
+       * @param id
+       */
+      activeSidebar: function (id) {
+        // 兄弟菜单去掉active样式，自身增加active样式
+        $("#" + id).siblings().removeClass("active");
+        $("#" + id).siblings().find("li").removeClass("active");
+        $("#" + id).addClass("active");
+
+        // 如果有父菜单，父菜单的兄弟菜单去掉open active，父菜单增加open active
+        let parentLi = $("#" + id).parents("li");
+        if (parentLi) {
+          parentLi.siblings().removeClass("open active");
+          parentLi.addClass("open active");
+        }
+      }
+    }
   }
 </script>
