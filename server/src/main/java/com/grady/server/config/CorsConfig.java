@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @Date 2020/5/26 20:34
  * @Version 1.0
  */
-@Configuration
+/*@Configuration
 public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -21,4 +21,4 @@ public class CorsConfig implements WebMvcConfigurer {
                 .allowCredentials(true)
                 .maxAge(3600); // 1小时内不需要再预检（发OPTIONS请求）
     }
-}
+}*/
