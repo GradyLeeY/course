@@ -7,7 +7,7 @@ spring:
               -   args:
                     - /system/**
                   name: Path
-            uri: http://127.0.0.1:9001
+            uri: lb://business
         -   id: business
             predicates:
               -   args:
