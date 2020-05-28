@@ -1,5 +1,6 @@
 package com.grady.server.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.grady.server.domain.Chapter;
 import com.grady.server.domain.ChapterExample;
 import com.grady.server.dto.ChapterDto;
@@ -24,6 +25,8 @@ public class ChapterServiceImpl implements IChapterService {
     private ChapterMapper chapterMapper;
 
     public List<ChapterDto> getAllChapter(){
+        //插件分页语句规则，调用startpage方法后执行的第一个select语句会进行分页
+        PageHelper.startPage(2,1);
         ChapterExample chapterExample = new ChapterExample();
         List<Chapter> chapterList = chapterMapper.selectByExample(chapterExample);
         List<ChapterDto> chapterDtoList = new ArrayList<>();
