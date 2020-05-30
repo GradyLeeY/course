@@ -1,9 +1,11 @@
 package com.grady.server.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.grady.server.domain.Chapter;
 import com.grady.server.domain.ChapterExample;
 import com.grady.server.dto.ChapterDto;
+import com.grady.server.dto.PageDto;
 import com.grady.server.mapper.ChapterMapper;
 import com.grady.server.service.IChapterService;
 import org.springframework.beans.BeanUtils;
@@ -24,19 +26,21 @@ public class ChapterServiceImpl implements IChapterService {
     @Resource
     private ChapterMapper chapterMapper;
 
-    public List<ChapterDto> getAllChapter(){
+    public void list(PageDto pageDto){
         //插件分页语句规则，调用startpage方法后执行的第一个select语句会进行分页
-        PageHelper.startPage(2,1);
+        PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
         ChapterExample chapterExample = new ChapterExample();
         List<Chapter> chapterList = chapterMapper.selectByExample(chapterExample);
         List<ChapterDto> chapterDtoList = new ArrayList<>();
+        PageInfo<Chapter> pageInfo = new PageInfo<>(chapterList);
+        pageDto.setTotal(pageInfo.getTotal());
         for (int i = 0, l = chapterList.size(); i < l; i++) {
             Chapter chapter = chapterList.get(i);
             ChapterDto chapterDto = new ChapterDto();
             BeanUtils.copyProperties(chapter, chapterDto);
             chapterDtoList.add(chapterDto);
         }
-        return chapterDtoList;
+        pageDto.setList(chapterDtoList);
     }
 
 }
