@@ -1,4 +1,11 @@
 <template>
+<div>
+  <p>
+    <button class="btn btn-info btn-round" v-on:click="list">
+      刷新
+      <i class="ace-icon fa fa-refresh"></i>
+    </button>
+  </p>
   <table id="simple-table" class="table  table-bordered table-hover">
     <thead>
     <tr>
@@ -74,6 +81,8 @@
 
     </tbody>
   </table>
+</div>
+
 </template>
 
 <script>
