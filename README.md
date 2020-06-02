@@ -34,7 +34,7 @@ git clone https://github.com/GradyLeeY/course.git
 * 需要本地安装好idea, nodejs，jdk1.8, mysql5.7, navicat（数据库可视化工具）
 * 将下载好的源码，用idea打开
 * 刷新maven依赖
-* 安装vue cli，参照课程4-1
+* 安装vue cli
 ```
 npm install -g @vue/cli
 ```
