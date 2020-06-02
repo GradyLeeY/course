@@ -13,4 +13,6 @@ import java.util.List;
 public interface IChapterService {
 
     void list(PageDto pageDto);
+
+    void save(ChapterDto chapterDto);
 }

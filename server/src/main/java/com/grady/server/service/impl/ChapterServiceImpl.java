@@ -8,6 +8,7 @@ import com.grady.server.dto.ChapterDto;
 import com.grady.server.dto.PageDto;
 import com.grady.server.mapper.ChapterMapper;
 import com.grady.server.service.IChapterService;
+import com.grady.server.util.UuidUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -43,4 +44,10 @@ public class ChapterServiceImpl implements IChapterService {
         pageDto.setList(chapterDtoList);
     }
 
+    public void save(ChapterDto chapterDto){
+        chapterDto.setId(UuidUtil.getShortUuid());
+        Chapter chapter = new Chapter();
+        BeanUtils.copyProperties(chapterDto,chapter);
+        chapterMapper.insert(chapter);
+    }
 }
