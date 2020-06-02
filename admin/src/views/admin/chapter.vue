@@ -87,10 +87,11 @@
     </tbody>
   </table>
 
-  <div class="modal fade" tabindex="-1" role="dialog">
+  <div id="form-modal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
+          <!--模态框的弹出和关闭，可以用js代码也可以用button属性：data-dismiss="css选择器"关闭；data-toggle="css选择器"打开-->
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title">表单</h4>
         </div>
@@ -136,21 +137,25 @@
     },
     mounted: function() {
       let _this = this;
-      _this.$refs.pagination.size = 5;
       _this.list(1);
       // sidebar激活样式方法一
       // this.$parent.activeSidebar("business-chapter-sidebar");
     },
     methods: {
-      save(page){
+      save(){
         let _this = this;
         _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/save',_this.chapter).then((response)=>{
           console.log("保存结果为:",response);
+          let res = response.data;
+          if (res.success){
+            $('#form-modal').modal('hide');
+            _this.list(1);
+          }
         })
       },
       add(){
         let _this = this;
-        $('.modal').modal('show');
+        $('#form-modal').modal('show');
       },
       list(page){
         let _this = this;
@@ -159,8 +164,9 @@
           size:_this.$refs.pagination.size
         }).then((response)=>{
           console.log("查询的结果:",response);
-          _this.chapterList = response.data.list;
-          _this.$refs.pagination.render(page, response.data.total);
+          let res = response.data;
+          _this.chapterList = res.content.list;
+          _this.$refs.pagination.render(page, res.content.total);
         })
       }
 

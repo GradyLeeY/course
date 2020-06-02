@@ -3,6 +3,8 @@ package com.grady.server.util;
 import java.util.UUID;
 
 /**
+ * 自增id至少有3个问题：
+ * 1、id是连续的容易被探测；2、需要+1次查询才能得到id的值；3、在分布式存储中，id会重复出现
  * @author grady
  * @date 20-6-2 下午5:43
  */
