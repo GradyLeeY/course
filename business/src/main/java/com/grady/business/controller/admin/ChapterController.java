@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @Author Grady
@@ -28,8 +27,7 @@ public class ChapterController {
     private IChapterService iChapterService;
 
     @RequestMapping(value = "/list",method = RequestMethod.POST)
-    //PageDto pageDto 前端传参有两种方式，一种是表单提交，一种是json流的方式
-    //vue 和angular默认是使用json流的方式所以要加上RequestBody的注解
+    //PageDto pageDto 前端传参有两种方式，一种是表单提交，一种是json流的方式 vue 和angular默认是使用json流的方式所以要加上RequestBody的注解
     public ResponseDto list(@RequestBody PageDto pageDto){
         logger.info("pageDto: {}",pageDto);
         iChapterService.list(pageDto);
