@@ -138,7 +138,9 @@
     methods: {
       save(){
         let _this = this;
+        Loading.show();
         _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/save',_this.chapter).then((response)=>{
+          Loading.hide();
           console.log("保存结果为:",response);
           let res = response.data;
           if (res.success){
@@ -161,7 +163,6 @@
       },
       del(id){
         let _this = this;
-
         Swal.fire({
           title: '确认删除id为'+id+'这条数据嘛',
           text: '删除后不可恢复，确认删除?',
@@ -173,6 +174,7 @@
         }).then((result)=>{
           if (result.value){
             _this.$ajax.delete('http://127.0.0.1:9000/business/admin/chapter/delete/'+id).then((response)=>{
+              Loading.show();
               let res = response.data;
               if (res.success){
                 _this.list(1);
@@ -184,10 +186,12 @@
       },
       list(page){
         let _this = this;
+        Loading.show();
         _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/list',{
           page:page,
           size:_this.$refs.pagination.size
         }).then((response)=>{
+          Loading.hide();
           console.log("查询的结果:",response);
           let res = response.data;
           _this.chapterList = res.content.list;
