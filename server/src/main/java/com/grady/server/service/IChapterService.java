@@ -15,4 +15,6 @@ public interface IChapterService {
     void list(PageDto pageDto);
 
     void save(ChapterDto chapterDto);
+
+    void delete(String id);
 }

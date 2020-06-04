@@ -36,7 +36,7 @@
             <i class="ace-icon fa fa-pencil bigger-120"></i>
           </button>
 
-          <button class="btn btn-xs btn-danger">
+          <button v-on:click="del(item.id)" class="btn btn-xs btn-danger">
             <i class="ace-icon fa fa-trash-o bigger-120"></i>
           </button>
 
@@ -157,6 +157,16 @@
         let _this = this;
         _this.chapter = $.extend({},item);
         $('#form-modal').modal('show');
+      },
+      del(id){
+        let _this = this;
+        _this.$ajax.delete('http://127.0.0.1:9000/business/admin/chapter/delete/'+id).then((response)=>{
+          let res = response.data;
+          if (res.success){
+            console.log('删除成功');
+            _this.list(1);
+          }
+        })
       },
       list(page){
         let _this = this;

@@ -6,10 +6,7 @@ import com.grady.server.dto.ResponseDto;
 import com.grady.server.service.IChapterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -42,6 +39,14 @@ public class ChapterController {
         ResponseDto responseDto = new ResponseDto();
         iChapterService.save(chapterDto);
         responseDto.setContent(chapterDto);
+        return responseDto;
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseDto delete(@PathVariable String id){
+        logger.info("id:{}",id);
+        ResponseDto responseDto = new ResponseDto();
+        iChapterService.delete(id);
         return responseDto;
     }
 }
