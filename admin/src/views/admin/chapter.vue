@@ -144,6 +144,7 @@
           if (res.success){
             $('#form-modal').modal('hide');
             _this.list(1);
+            toast.success("保存成功");
           }
         })
       },
@@ -175,11 +176,7 @@
               let res = response.data;
               if (res.success){
                 _this.list(1);
-                Swal.fire(
-                  '删除成功',
-                  '该数据已删除',
-                  'success'
-                );
+                toast.success("删除成功");
               }
             })
           }
