@@ -136,6 +136,7 @@
       // this.$parent.activeSidebar("business-chapter-sidebar");
     },
     methods: {
+      //保存
       save(){
         let _this = this;
 
@@ -147,7 +148,6 @@
         Loading.show();
         _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/save',_this.chapter).then((response)=>{
           Loading.hide();
-          console.log("保存结果为:",response);
           let res = response.data;
           if (res.success){
             $('#form-modal').modal('hide');
@@ -158,6 +158,7 @@
           }
         })
       },
+      //新增
       add(){
         let _this = this;
         _this.chapter = {};
@@ -169,13 +170,13 @@
         _this.chapter = $.extend({},item);
         $('#form-modal').modal('show');
       },
+      //删除
       del(id){
         let _this = this;
         Confirm.show("是否确认删除"+id+"这个大章",function () {
           Loading.show();
           _this.$ajax.delete('http://127.0.0.1:9000/business/admin/chapter/delete/'+id).then((response)=>{
             Loading.hide();
-            console.log("删除大章列表结果",response);
             let res = response.data;
             if(res.success){
               _this.list(1);
@@ -185,6 +186,7 @@
         });
 
       },
+      //查询
       list(page){
         let _this = this;
         Loading.show();
@@ -193,7 +195,6 @@
           size:_this.$refs.pagination.size
         }).then((response)=>{
           Loading.hide();
-          console.log("查询的结果:",response);
           let res = response.data;
           _this.chapterList = res.content.list;
           _this.$refs.pagination.render(page, res.content.total);

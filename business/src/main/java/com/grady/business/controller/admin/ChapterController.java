@@ -20,7 +20,6 @@ import javax.annotation.Resource;
 @RequestMapping("/admin/chapter")
 public class ChapterController {
 
-    private Logger logger = LoggerFactory.getLogger(ChapterController.class);
     public static final String BUSINESS_NAME = "大章";
 
     @Resource
@@ -29,7 +28,6 @@ public class ChapterController {
     @RequestMapping(value = "/list",method = RequestMethod.POST)
     //PageDto pageDto 前端传参有两种方式，一种是表单提交，一种是json流的方式 vue 和angular默认是使用json流的方式所以要加上RequestBody的注解
     public ResponseDto list(@RequestBody PageDto pageDto){
-        logger.info("pageDto: {}",pageDto);
         iChapterService.list(pageDto);
         ResponseDto responseDto = new ResponseDto();
         responseDto.setContent(pageDto);
@@ -38,7 +36,6 @@ public class ChapterController {
 
     @RequestMapping(value = "/save",method = RequestMethod.POST)
     public ResponseDto save(@RequestBody ChapterDto chapterDto){
-        logger.info("chapterDto:{}",chapterDto);
         ValidatorUtil.require(chapterDto.getName(),"课程名称");
         ValidatorUtil.require(chapterDto.getCourseId(),"课程id");
         ValidatorUtil.length(chapterDto.getCourseId(),"课程id",4,8);
@@ -50,7 +47,6 @@ public class ChapterController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseDto delete(@PathVariable String id){
-        logger.info("id:{}",id);
         ResponseDto responseDto = new ResponseDto();
         iChapterService.delete(id);
         return responseDto;
