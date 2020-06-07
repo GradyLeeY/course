@@ -39,9 +39,8 @@
                              targetPackage="com.grady.server.mapper"
                              type="XMLMAPPER" />
 
-<!--        <table tableName="test" domainObjectName="Test"/>-->
-            <table tableName="chapter" domainObjectName="Chapter"/>
-<!--        <table tableName="section" domainObjectName="Section"/>-->
+<!--        <table tableName="chapter" domainObjectName="Chapter"/>-->
+        <table tableName="section" domainObjectName="Section"/>
 <!--        <table tableName="course" domainObjectName="Course"/>-->
 <!--        <table tableName="course_content" domainObjectName="CourseContent"/>-->
 <!--        <table tableName="course_content_file" domainObjectName="CourseContentFile"/>-->
@@ -54,6 +53,7 @@
 <!--        <table tableName="role_user" domainObjectName="RoleUser"/>-->
 <!--        <table tableName="member" domainObjectName="Member"/>-->
 <!--        <table tableName="sms" domainObjectName="Sms"/>-->
-        <table tableName="member_course" domainObjectName="MemberCourse"/>
+<!--        <table tableName="member_course" domainObjectName="MemberCourse"/>-->
+
     </context>
 </generatorConfiguration>
