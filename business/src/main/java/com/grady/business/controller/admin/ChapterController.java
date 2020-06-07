@@ -4,6 +4,7 @@ import com.grady.server.dto.ChapterDto;
 import com.grady.server.dto.PageDto;
 import com.grady.server.dto.ResponseDto;
 import com.grady.server.service.IChapterService;
+import com.grady.server.util.ValidatorUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +37,9 @@ public class ChapterController {
     @RequestMapping(value = "/save",method = RequestMethod.POST)
     public ResponseDto save(@RequestBody ChapterDto chapterDto){
         logger.info("chapterDto:{}",chapterDto);
+        ValidatorUtil.require(chapterDto.getName(),"课程名称");
+        ValidatorUtil.require(chapterDto.getCourseId(),"课程id");
+        ValidatorUtil.length(chapterDto.getCourseId(),"课程id",4,8);
         ResponseDto responseDto = new ResponseDto();
         iChapterService.save(chapterDto);
         responseDto.setContent(chapterDto);
