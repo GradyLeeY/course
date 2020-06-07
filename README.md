@@ -48,7 +48,7 @@ npm install
 cd admin
 npm install
 ```
-* 新建数据库courseimooc，并courseimooc，密码courseimooc，参照课程3-1
+* 新建数据库gradycourse
 * 数据库初始脚本在/doc/db/all.sql
 
 ## 项目启动
