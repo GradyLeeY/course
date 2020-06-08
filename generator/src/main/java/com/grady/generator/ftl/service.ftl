@@ -17,7 +17,11 @@ import org.springframework.util.StringUtils;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-
+<#list typeSet as type>
+    <#if type=='Date'>
+        import java.util.Date;
+    </#if>
+</#list>
 /**
  * @Author Grady
  * @Date 2020/5/24 14:05
@@ -35,15 +39,14 @@ public class ${Domain}ServiceImpl implements I${Domain}Service {
         PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
         ${Domain}Example ${domain}Example = new ${Domain}Example();
         List<${Domain}> ${domain}List = ${domain}Mapper.selectByExample(${domain}Example);
-
+        <#list fieldList as field>
+            <#if field.nameHump=='sort'>
+            ${domain}Example.setOrderByClause("sort asc");
+            </#if>
+        </#list>
         PageInfo<${Domain}> pageInfo = new PageInfo<>(${domain}List);
         pageDto.setTotal(pageInfo.getTotal());
-        /*for (int i = 0, l = ${domain}List.size(); i < l; i++) {
-            ${Domain} ${domain} = ${domain}List.get(i);
-            ${Domain}Dto ${domain}Dto = new ${Domain}Dto();
-            BeanUtils.copyProperties(${domain}, ${domain}Dto);
-            ${domain}DtoList.add(${domain}Dto);
-        }*/
+
         List<${Domain}Dto> ${domain}DtoList = CopyUtil.copyList(${domain}List,${Domain}Dto.class);
         pageDto.setList(${domain}DtoList);
     }
@@ -64,10 +67,24 @@ public class ${Domain}ServiceImpl implements I${Domain}Service {
     }
 
     private void update(${Domain} ${domain}) {
+    <#list fieldList as field>
+        <#if field.nameHump=='updatedAt'>
+            ${domain}.setUpdatedAt(new Date());
+        </#if>
+    </#list>
         ${domain}Mapper.updateByPrimaryKey(${domain});
     }
 
     private void insert(${Domain} ${domain}) {
+        Date now = new Date();
+    <#list fieldList as field>
+        <#if field.nameHump=='createdAt'>
+            ${domain}.setCreatedAt(now);
+        </#if>
+        <#if field.nameHump=='updatedAt'>
+            ${domain}.setUpdatedAt(now);
+        </#if>
+    </#list>
         ${domain}.setId(UuidUtil.getShortUuid());
         ${domain}Mapper.insert(${domain});
     }
