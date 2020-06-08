@@ -4,46 +4,57 @@ import com.grady.server.dto.SectionDto;
 import com.grady.server.dto.PageDto;
 import com.grady.server.dto.ResponseDto;
 import com.grady.server.service.ISectionService;
+import com.grady.server.util.ValidatorUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
-/**
- * @Author Grady
- * @Date 2020/5/24 14:06
- * @Version 1.0
- */
 @RestController
 @RequestMapping("/admin/section")
 public class SectionController {
 
+    private static final Logger LOG = LoggerFactory.getLogger(SectionController.class);
     public static final String BUSINESS_NAME = "小节";
 
     @Resource
-    private ISectionService iSectionService;
+    private ISectionService isectionService;
 
-    @RequestMapping(value = "/list",method = RequestMethod.POST)
-    //PageDto pageDto 前端传参有两种方式，一种是表单提交，一种是json流的方式 vue 和angular默认是使用json流的方式所以要加上RequestBody的注解
-    public ResponseDto list(@RequestBody PageDto pageDto){
-        iSectionService.list(pageDto);
+    /**
+     * 列表查询
+     */
+    @PostMapping("/list")
+    public ResponseDto list(@RequestBody PageDto pageDto) {
         ResponseDto responseDto = new ResponseDto();
+        isectionService.list(pageDto);
         responseDto.setContent(pageDto);
         return responseDto;
     }
 
-    @RequestMapping(value = "/save",method = RequestMethod.POST)
-    public ResponseDto save(@RequestBody SectionDto sectionDto){
+    /**
+     * 保存，id有值时更新，无值时新增
+     */
+    @PostMapping("/save")
+    public ResponseDto save(@RequestBody SectionDto sectionDto) {
+        // 保存校验
+        ValidatorUtil.require(sectionDto.getTitle(), "标题");
+        ValidatorUtil.length(sectionDto.getTitle(), "标题", 1, 50);
+        ValidatorUtil.length(sectionDto.getVideo(), "视频", 1, 200);
 
         ResponseDto responseDto = new ResponseDto();
-        iSectionService.save(sectionDto);
+        isectionService.save(sectionDto);
         responseDto.setContent(sectionDto);
         return responseDto;
     }
 
+    /**
+     * 删除
+     */
     @DeleteMapping("/delete/{id}")
-    public ResponseDto delete(@PathVariable String id){
+    public ResponseDto delete(@PathVariable String id) {
         ResponseDto responseDto = new ResponseDto();
-        iSectionService.delete(id);
+        isectionService.delete(id);
         return responseDto;
     }
 }

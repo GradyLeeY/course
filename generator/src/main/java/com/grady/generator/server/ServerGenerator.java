@@ -57,13 +57,13 @@ public class ServerGenerator {
         map.put("fieldList", fieldList);
         map.put("typeSet", typeSet);
 
-        // 生成dto
+       /* // 生成dto
         FreemarkerUtil.initConfig("dto.ftl");
         FreemarkerUtil.generator(toDtoPath + Domain + "Dto.java", map);
 
         // 生成service
         FreemarkerUtil.initConfig("service.ftl");
-        FreemarkerUtil.generator(toServicePath + Domain + "Service.java", map);
+        FreemarkerUtil.generator(toServicePath + Domain + "Service.java", map);*/
 
         // 生成controller
         FreemarkerUtil.initConfig("controller.ftl");

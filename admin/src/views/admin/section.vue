@@ -117,13 +117,13 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-sm-2 control-label">创建时间</label>
+                <label class="col-sm-2 control-label"></label>
                 <div class="col-sm-10">
                   <input v-model="section.createdAt" class="form-control">
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-sm-2 control-label">修改时间</label>
+                <label class="col-sm-2 control-label"></label>
                 <div class="col-sm-10">
                   <input v-model="section.updatedAt" class="form-control">
                 </div>
@@ -209,6 +209,13 @@
         let _this = this;
 
         // 保存校验
+        if (1 != 1
+          || !Validator.require(_this.section.title, "标题")
+          || !Validator.length(_this.section.title, "标题", 1, 50)
+          || !Validator.length(_this.section.video, "视频", 1, 200)
+        ) {
+          return;
+        }
 
         Loading.show();
         _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/section/save', _this.section).then((response)=>{

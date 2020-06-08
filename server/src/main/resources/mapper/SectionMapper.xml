@@ -113,7 +113,7 @@
       updated_at, vod)
     values (#{id,jdbcType=CHAR}, #{title,jdbcType=VARCHAR}, #{courseId,jdbcType=CHAR}, 
       #{chapterId,jdbcType=CHAR}, #{video,jdbcType=VARCHAR}, #{time,jdbcType=INTEGER}, 
-      #{charge,jdbcType=CHAR}, #{sort,jdbcType=INTEGER}, #{createdAt,jdbcType=TIMESTAMP}, 
+      #{charge,jdbcType=CHAR}, #{sort,jdbcType=INTEGER}, #{createdAt,jdbcType=TIMESTAMP},
       #{updatedAt,jdbcType=TIMESTAMP}, #{vod,jdbcType=CHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.grady.server.domain.Section">
