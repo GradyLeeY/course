@@ -1,4 +1,4 @@
-package com.grady.business.controller.admin;
+package com.grady.${module}.controller.admin;
 
 import com.grady.server.dto.${Domain}Dto;
 import com.grady.server.dto.PageDto;
@@ -20,7 +20,7 @@ import javax.annotation.Resource;
 @RequestMapping("/admin/${domain}")
 public class ${Domain}Controller {
 
-    public static final String BUSINESS_NAME = "大章";
+    public static final String BUSINESS_NAME = "${tableNameCn}";
 
     @Resource
     private I${Domain}Service i${Domain}Service;
