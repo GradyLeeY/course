@@ -12,6 +12,8 @@
       </button>
     </p>
 
+    <pagination ref="pagination" v-bind:list="list" v-bind:itemCount="8"></pagination>
+
     <div class="row">
       <div v-for="course in courses" class="col-md-4">
         <div class="thumbnail search-thumbnail">
@@ -43,6 +45,9 @@
               <span class="badge badge-info">时长：{{course.time}}</span>
             </p>
             <p>
+              <button v-on:click="toChapter(course)" class="btn btn-white btn-xs btn-info btn-round">
+                大章
+              </button>&nbsp;
               <button v-on:click="edit(course)" class="btn btn-white btn-xs btn-info btn-round">
                 编辑
               </button>&nbsp;
@@ -99,7 +104,7 @@
     <!--      </tr>-->
     <!--      </tbody>-->
     <!--    </table>-->
-    <pagination ref="pagination" v-bind:list="list" v-bind:itemCount="8"></pagination>
+
     <div id="form-modal" class="modal fade" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -292,6 +297,15 @@
             }
           })
         });
+      },
+
+      /**
+       * 点击【大章】
+       */
+      toChapter(course) {
+        let _this = this;
+        SessionStorage.set("course", course);
+        _this.$router.push("/business/chapter");
       }
     }
   }
