@@ -6,6 +6,7 @@ import com.grady.server.domain.Section;
 import com.grady.server.domain.SectionExample;
 import com.grady.server.dto.SectionDto;
 import com.grady.server.dto.PageDto;
+import com.grady.server.dto.SectionPageDto;
 import com.grady.server.mapper.SectionMapper;
 import com.grady.server.service.ISectionService;
 import com.grady.server.util.CopyUtil;
@@ -28,17 +29,24 @@ public class SectionServiceImpl implements ISectionService {
     private SectionMapper sectionMapper;
 
     @Override
-    public void list(PageDto pageDto){
+    public void list(SectionPageDto sectionPageDto){
         //插件分页语句规则，调用startpage方法后执行的第一个select语句会进行分页
-        PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
+        PageHelper.startPage(sectionPageDto.getPage(),sectionPageDto.getSize());
         SectionExample sectionExample = new SectionExample();
-        List<Section> sectionList = sectionMapper.selectByExample(sectionExample);
+        SectionExample.Criteria criteria = sectionExample.createCriteria();
+        if (!StringUtils.isEmpty(sectionPageDto.getCourseId())){
+            criteria.andCourseIdEqualTo(sectionPageDto.getCourseId());
+        }
+        if (!StringUtils.isEmpty(sectionPageDto.getChapterId())){
+            criteria.andChapterIdEqualTo(sectionPageDto.getChapterId());
+        }
         sectionExample.setOrderByClause("sort asc");
+        List<Section> sectionList = sectionMapper.selectByExample(sectionExample);
         PageInfo<Section> pageInfo = new PageInfo<>(sectionList);
-        pageDto.setTotal(pageInfo.getTotal());
+        sectionPageDto.setTotal(pageInfo.getTotal());
 
         List<SectionDto> sectionDtoList = CopyUtil.copyList(sectionList,SectionDto.class);
-        pageDto.setList(sectionDtoList);
+        sectionPageDto.setList(sectionDtoList);
     }
 
     @Override

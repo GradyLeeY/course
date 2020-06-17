@@ -3,6 +3,7 @@ package com.grady.business.controller.admin;
 import com.grady.server.dto.SectionDto;
 import com.grady.server.dto.PageDto;
 import com.grady.server.dto.ResponseDto;
+import com.grady.server.dto.SectionPageDto;
 import com.grady.server.service.ISectionService;
 import com.grady.server.util.ValidatorUtil;
 import org.slf4j.Logger;
@@ -25,10 +26,12 @@ public class SectionController {
      * 列表查询
      */
     @PostMapping("/list")
-    public ResponseDto list(@RequestBody PageDto pageDto) {
+    public ResponseDto list(@RequestBody SectionPageDto sectionPageDto) {
         ResponseDto responseDto = new ResponseDto();
-        isectionService.list(pageDto);
-        responseDto.setContent(pageDto);
+        ValidatorUtil.require(sectionPageDto.getCourseId(), "课程ID");
+        ValidatorUtil.require(sectionPageDto.getChapterId(), "大章ID");
+        isectionService.list(sectionPageDto);
+        responseDto.setContent(sectionPageDto);
         return responseDto;
     }
 

@@ -2,6 +2,7 @@ package com.grady.server.service;
 
 import com.grady.server.dto.PageDto;
 import com.grady.server.dto.SectionDto;
+import com.grady.server.dto.SectionPageDto;
 
 /**
  * @Author Grady
@@ -10,7 +11,7 @@ import com.grady.server.dto.SectionDto;
  */
 public interface ISectionService {
 
-    void list(PageDto pageDto);
+    void list(SectionPageDto sectionPageDto);
 
     void save(SectionDto sectionDto);
 
