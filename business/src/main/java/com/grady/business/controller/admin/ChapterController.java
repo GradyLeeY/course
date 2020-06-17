@@ -1,6 +1,7 @@
 package com.grady.business.controller.admin;
 
 import com.grady.server.dto.ChapterDto;
+import com.grady.server.dto.ChapterPageDto;
 import com.grady.server.dto.PageDto;
 import com.grady.server.dto.ResponseDto;
 import com.grady.server.service.IChapterService;
@@ -27,10 +28,11 @@ public class ChapterController {
 
     @RequestMapping(value = "/list",method = RequestMethod.POST)
     //PageDto pageDto 前端传参有两种方式，一种是表单提交，一种是json流的方式 vue 和angular默认是使用json流的方式所以要加上RequestBody的注解
-    public ResponseDto list(@RequestBody PageDto pageDto){
-        iChapterService.list(pageDto);
+    public ResponseDto list(@RequestBody ChapterPageDto chapterPageDto){
+        ValidatorUtil.require(chapterPageDto.getCourseId(),"课程id");
+        iChapterService.list(chapterPageDto);
         ResponseDto responseDto = new ResponseDto();
-        responseDto.setContent(pageDto);
+        responseDto.setContent(chapterPageDto);
         return responseDto;
     }
 

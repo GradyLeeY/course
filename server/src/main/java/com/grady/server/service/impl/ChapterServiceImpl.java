@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.grady.server.domain.Chapter;
 import com.grady.server.domain.ChapterExample;
 import com.grady.server.dto.ChapterDto;
+import com.grady.server.dto.ChapterPageDto;
 import com.grady.server.dto.PageDto;
 import com.grady.server.mapper.ChapterMapper;
 import com.grady.server.service.IChapterService;
@@ -30,22 +31,19 @@ public class ChapterServiceImpl implements IChapterService {
     private ChapterMapper chapterMapper;
 
     @Override
-    public void list(PageDto pageDto){
+    public void list(ChapterPageDto chapterPageDto){
         //插件分页语句规则，调用startpage方法后执行的第一个select语句会进行分页
-        PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
+        PageHelper.startPage(chapterPageDto.getPage(), chapterPageDto.getSize());
         ChapterExample chapterExample = new ChapterExample();
+        ChapterExample.Criteria criteria = chapterExample.createCriteria();
+        if (!StringUtils.isEmpty(chapterPageDto.getCourseId())) {
+            criteria.andCourseIdEqualTo(chapterPageDto.getCourseId());
+        }
         List<Chapter> chapterList = chapterMapper.selectByExample(chapterExample);
-
         PageInfo<Chapter> pageInfo = new PageInfo<>(chapterList);
-        pageDto.setTotal(pageInfo.getTotal());
-        /*for (int i = 0, l = chapterList.size(); i < l; i++) {
-            Chapter chapter = chapterList.get(i);
-            ChapterDto chapterDto = new ChapterDto();
-            BeanUtils.copyProperties(chapter, chapterDto);
-            chapterDtoList.add(chapterDto);
-        }*/
-        List<ChapterDto> chapterDtoList = CopyUtil.copyList(chapterList,ChapterDto.class);
-        pageDto.setList(chapterDtoList);
+        chapterPageDto.setTotal(pageInfo.getTotal());
+        List<ChapterDto> chapterDtoList = CopyUtil.copyList(chapterList, ChapterDto.class);
+        chapterPageDto.setList(chapterDtoList);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.grady.server.service;
 
 import com.grady.server.dto.ChapterDto;
+import com.grady.server.dto.ChapterPageDto;
 import com.grady.server.dto.PageDto;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  */
 public interface IChapterService {
 
-    void list(PageDto pageDto);
+    void list(ChapterPageDto chapterPageDto);
 
     void save(ChapterDto chapterDto);
 
