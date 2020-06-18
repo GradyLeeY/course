@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface CourseMapper {
+
     long countByExample(CourseExample example);
 
     int deleteByExample(CourseExample example);
@@ -27,4 +28,6 @@ public interface CourseMapper {
     int updateByPrimaryKeySelective(Course record);
 
     int updateByPrimaryKey(Course record);
+
+    int updateTime(String courseId);
 }

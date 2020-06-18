@@ -99,6 +99,7 @@
     from course
     where id = #{id,jdbcType=CHAR}
   </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from course
     where id = #{id,jdbcType=CHAR}
@@ -349,5 +350,9 @@
       updated_at = #{updatedAt,jdbcType=TIMESTAMP},
       teacher_id = #{teacherId,jdbcType=CHAR}
     where id = #{id,jdbcType=CHAR}
+  </update>
+
+  <update id="updateTime">
+    UPDATE course c SET time = (select sum(`time`) from `section` where course_id = #{courseId}) WHERE c.id = #{courseId}
   </update>
 </mapper>

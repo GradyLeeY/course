@@ -8,6 +8,7 @@ import com.grady.server.dto.SectionDto;
 import com.grady.server.dto.PageDto;
 import com.grady.server.dto.SectionPageDto;
 import com.grady.server.mapper.SectionMapper;
+import com.grady.server.service.ICourseService;
 import com.grady.server.service.ISectionService;
 import com.grady.server.util.CopyUtil;
 import com.grady.server.util.UuidUtil;
@@ -27,6 +28,9 @@ public class SectionServiceImpl implements ISectionService {
 
     @Resource
     private SectionMapper sectionMapper;
+
+    @Resource
+    private ICourseService iCourseService;
 
     @Override
     public void list(SectionPageDto sectionPageDto){
@@ -57,12 +61,14 @@ public class SectionServiceImpl implements ISectionService {
         }else {
             this.update(section);
         }
+        iCourseService.updateTime(sectionDto.getCourseId());
     }
 
     @Override
     public void delete(String id){
         sectionMapper.deleteByPrimaryKey(id);
     }
+
 
     private void update(Section section) {
         section.setUpdatedAt(new Date());

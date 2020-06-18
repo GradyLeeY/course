@@ -56,6 +56,11 @@ public class CourseServiceImpl implements ICourseService {
         courseMapper.deleteByPrimaryKey(id);
     }
 
+    @Override
+    public int updateTime(String courseId){
+        return courseMapper.updateTime(courseId);
+    }
+
     private void update(Course course) {
             course.setUpdatedAt(new Date());
         courseMapper.updateByPrimaryKey(course);
@@ -68,4 +73,5 @@ public class CourseServiceImpl implements ICourseService {
         course.setId(UuidUtil.getShortUuid());
         courseMapper.insert(course);
     }
+
 }

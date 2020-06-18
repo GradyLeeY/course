@@ -12,6 +12,10 @@ import com.grady.server.dto.PageDto;
 public interface ICourseService {
 
     void list(PageDto pageDto);
+
     void save(CourseDto courseDto);
+
     void delete(String id);
+
+    int updateTime(String courseId);
 }
