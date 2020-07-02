@@ -1,4 +1,4 @@
-package com.grady.business.config;
+package com.grady.server.config;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.support.spring.PropertyPreFilters;

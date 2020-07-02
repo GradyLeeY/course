@@ -13,6 +13,7 @@ import com.grady.server.service.ISectionService;
 import com.grady.server.util.CopyUtil;
 import com.grady.server.util.UuidUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -53,8 +54,19 @@ public class SectionServiceImpl implements ISectionService {
         sectionPageDto.setList(sectionDtoList);
     }
 
+    /**
+     * 保存，id有值时更新，无值时新增
+     * @param sectionDto
+     */
     @Override
+    @Transactional
     public void save(SectionDto sectionDto){
+        /**
+         * 注解不生效的原因：1 异常为Exception需要在注解中加rollbackFor = Exception.class，自定义异常一般选择集成RuntimeException
+         * 2 如果不抛异常 而是使用try catch 也是不起作用的
+         * 3 同一个类的内部方法互相调用，methodA 调用methodB，methodB的事务不起作用，spring的事务处理时利用AOP生成代理类，内部方法调用时不经过
+         * 代理类，所以事务不生效
+        */
         Section section = CopyUtil.copy(sectionDto,Section.class);
         if (StringUtils.isEmpty(sectionDto.getId())){
             this.insert(section);
