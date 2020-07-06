@@ -208,7 +208,6 @@
     },
     mounted: function() {
       let _this = this;
-      _this.$refs.pagination.size = 5;
       _this.list(1);
       // sidebar激活样式方法一
       // this.$parent.activeSidebar("business-course-sidebar");

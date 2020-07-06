@@ -6,17 +6,14 @@ import com.grady.server.domain.Chapter;
 import com.grady.server.domain.ChapterExample;
 import com.grady.server.dto.ChapterDto;
 import com.grady.server.dto.ChapterPageDto;
-import com.grady.server.dto.PageDto;
 import com.grady.server.mapper.ChapterMapper;
 import com.grady.server.service.IChapterService;
 import com.grady.server.util.CopyUtil;
 import com.grady.server.util.UuidUtil;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
