@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author grady
@@ -25,6 +26,13 @@ public class CategoryController {
     @Resource
     private ICategoryService categoryService;
 
+    @PostMapping("/all")
+    public ResponseDto all(){
+        ResponseDto responseDto = new ResponseDto();
+        List<CategoryDto> all = categoryService.all();
+        responseDto.setContent(all);
+        return responseDto;
+    }
     /**
      * 列表查询
      */
