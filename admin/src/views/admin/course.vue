@@ -172,9 +172,11 @@
     },
     mounted: function() {
       let _this = this;
-
       _this.list(1);
-      _this.allCategory();
+      _this.allCategorys();
+      // sidebar激活样式方法一
+      // this.$parent.activeSidebar("business-course-sidebar");
+
     },
     methods: {
       /**
@@ -209,6 +211,7 @@
           let resp = response.data;
           _this.courses = resp.content.list;
           _this.$refs.pagination.render(page, resp.content.total);
+
         })
       },
 
@@ -217,6 +220,7 @@
        */
       save() {
         let _this = this;
+
         // 保存校验
         if (1 != 1
           || !Validator.require(_this.course.name, "名称")
@@ -268,14 +272,15 @@
         _this.$router.push("/business/chapter");
       },
 
-      allCategory(){
+      allCategorys(){
         let _this = this;
-        _this.$ajax.post(process.env.VUE_APP_SERVER+ '/business/admin/category/all').then((response)=>{
+        _this.$ajax.post(process.env.VUE_APP_SERVER+'/business/admin/category/all').then((response)=>{
           let resp = response.data;
           _this.categorys = resp.content;
           _this.initTree();
         })
       },
+
       initTree(){
         let _this = this;
         let setting = {
@@ -284,8 +289,8 @@
           },
           data: {
             simpleData: {
-              idKey : "id",
               pIdKey: "parent",
+              idKey: "id",
               rootPId: "00000000",
               enable: true
             }
