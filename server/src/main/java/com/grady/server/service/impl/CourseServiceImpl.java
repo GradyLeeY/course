@@ -7,10 +7,12 @@ import com.grady.server.domain.CourseExample;
 import com.grady.server.dto.CourseDto;
 import com.grady.server.dto.PageDto;
 import com.grady.server.mapper.CourseMapper;
+import com.grady.server.service.ICourseCategoryService;
 import com.grady.server.service.ICourseService;
 import com.grady.server.util.CopyUtil;
 import com.grady.server.util.UuidUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -27,6 +29,9 @@ public class CourseServiceImpl implements ICourseService {
     @Resource
     private CourseMapper courseMapper;
 
+    @Resource
+    private ICourseCategoryService iCourseCategoryService;
+
     @Override
     public void list(PageDto pageDto){
         //插件分页语句规则，调用startpage方法后执行的第一个select语句会进行分页
@@ -42,6 +47,7 @@ public class CourseServiceImpl implements ICourseService {
     }
 
     @Override
+    @Transactional
     public void save(CourseDto courseDto){
         Course course = CopyUtil.copy(courseDto,Course.class);
         if (StringUtils.isEmpty(courseDto.getId())){
@@ -49,6 +55,7 @@ public class CourseServiceImpl implements ICourseService {
         }else {
             this.update(course);
         }
+        iCourseCategoryService.saveBatch(courseDto.getId(), courseDto.getCategorys());
     }
 
     @Override
@@ -65,6 +72,7 @@ public class CourseServiceImpl implements ICourseService {
             course.setUpdatedAt(new Date());
         courseMapper.updateByPrimaryKey(course);
     }
+
 
     private void insert(Course course) {
         Date now = new Date();
