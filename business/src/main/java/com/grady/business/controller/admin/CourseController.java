@@ -1,10 +1,8 @@
 package com.grady.business.controller.admin;
 
-import com.grady.server.dto.CourseCategoryDto;
-import com.grady.server.dto.CourseDto;
-import com.grady.server.dto.PageDto;
-import com.grady.server.dto.ResponseDto;
+import com.grady.server.dto.*;
 import com.grady.server.service.ICourseCategoryService;
+import com.grady.server.service.ICourseContentService;
 import com.grady.server.service.ICourseService;
 import com.grady.server.util.ValidatorUtil;
 import org.slf4j.Logger;
@@ -26,6 +24,9 @@ public class CourseController {
 
     @Resource
     private ICourseCategoryService iCourseCategoryService;
+
+    @Resource
+    private ICourseContentService courseContentService;
 
     /**
      * 列表查询
@@ -72,4 +73,20 @@ public class CourseController {
         responseDto.setContent(courseCategoryDtos);
         return responseDto;
     }
+
+    @GetMapping("/find-content/{id}")
+    public ResponseDto findContent(@PathVariable(value = "id") String id){
+        ResponseDto responseDto = new ResponseDto();
+        CourseContentDto content = courseContentService.findContent(id);
+        responseDto.setContent(content);
+        return responseDto;
+    }
+
+    @PostMapping("/save-content")
+    public ResponseDto saveContent(@RequestBody CourseContentDto contentDto){
+        ResponseDto responseDto = new ResponseDto();
+        courseContentService.saveContent(contentDto);
+        return responseDto;
+    }
+
 }

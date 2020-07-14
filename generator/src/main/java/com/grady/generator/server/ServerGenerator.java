@@ -18,11 +18,18 @@ import java.util.*;
  * @Version 1.0
  */
 public class ServerGenerator {
-    static String MODULE = "business";
+    //windows
+    /*static String MODULE = "business";
     static String toDtoPath = "server\\src\\main\\java\\com\\grady\\server\\dto\\";
     static String toServicePath = "server\\src\\main\\java\\com\\grady\\server\\service\\impl\\";
     static String toControllerPath = MODULE+"\\src\\main\\java\\com\\grady\\"+MODULE+"\\controller\\admin\\";
-    static String generatorConfigPath = "server\\src\\main\\resources\\generator\\generatorConfig.xml";
+    static String generatorConfigPath = "server\\src\\main\\resources\\generator\\generatorConfig.xml";*/
+    //linux
+    static String MODULE = "business";
+    static String toDtoPath = "server/src/main/java/com/grady/server/dto/";
+    static String toServicePath = "server/src/main/java/com/grady/server/service/impl/";
+    static String toControllerPath = MODULE+"/src/main/java/com/grady/"+MODULE+"/controller/admin/";
+    static String generatorConfigPath = "server/src/main/resources/generator/generatorConfig.xml";
 
     public static void main(String[] args) throws Exception {
         String module = MODULE;

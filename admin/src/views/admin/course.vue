@@ -48,6 +48,9 @@
               <button v-on:click="toChapter(course)" class="btn btn-white btn-xs btn-info btn-round">
                 大章
               </button>&nbsp;
+              <button v-on:click="editContent(course)" class="btn btn-white btn-xs btn-info btn-round">
+                内容
+              </button>&nbsp;
               <button v-on:click="edit(course)" class="btn btn-white btn-xs btn-info btn-round">
                 编辑
               </button>&nbsp;

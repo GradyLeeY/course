@@ -54,8 +54,8 @@ public class CourseServiceImpl implements ICourseService {
             this.insert(course);
         }else {
             this.update(course);
+            iCourseCategoryService.saveBatch(courseDto.getId(), courseDto.getCategorys());
         }
-        iCourseCategoryService.saveBatch(courseDto.getId(), courseDto.getCategorys());
     }
 
     @Override
@@ -69,15 +69,15 @@ public class CourseServiceImpl implements ICourseService {
     }
 
     private void update(Course course) {
-            course.setUpdatedAt(new Date());
+        course.setUpdatedAt(new Date());
         courseMapper.updateByPrimaryKey(course);
     }
 
 
     private void insert(Course course) {
         Date now = new Date();
-            course.setCreatedAt(now);
-            course.setUpdatedAt(now);
+        course.setCreatedAt(now);
+        course.setUpdatedAt(now);
         course.setId(UuidUtil.getShortUuid());
         courseMapper.insert(course);
     }
