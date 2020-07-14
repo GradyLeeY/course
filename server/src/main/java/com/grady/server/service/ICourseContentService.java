@@ -10,6 +10,12 @@ import com.grady.server.dto.PageDto;
 public interface ICourseContentService {
 
     void list(PageDto pageDto);
+
     void save(CourseContentDto courseContentDto);
+
     void delete(String id);
+
+    CourseContentDto findContent(String id);
+
+    int saveContent(CourseContentDto contentDto);
 }

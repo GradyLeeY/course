@@ -56,6 +56,35 @@ public class CourseContentServiceImpl implements ICourseContentService {
         courseContentMapper.deleteByPrimaryKey(id);
     }
 
+    /**
+     * 保存课程内容包括新增和修改
+     * @param contentDto
+     * @return
+     */
+    public int saveContent(CourseContentDto contentDto){
+        CourseContent courseContent = CopyUtil.copy(contentDto,CourseContent.class);
+        int result = courseContentMapper.updateByPrimaryKeyWithBLOBs(courseContent);
+        if (result == 0){
+            result = courseContentMapper.insert(courseContent);
+        }
+        return result;
+
+    }
+    /**
+     * 查找课程内容
+     * @param id
+     * @return
+     */
+    @Override
+    public CourseContentDto findContent(String id){
+        CourseContent courseContent = courseContentMapper.selectByPrimaryKey(id);
+        if (StringUtils.isEmpty(courseContent)){
+            return null;
+        }
+        return CopyUtil.copy(courseContent,CourseContentDto.class);
+    }
+
+
     private void update(CourseContent courseContent) {
         courseContentMapper.updateByPrimaryKeyWithBLOBs(courseContent);
     }
