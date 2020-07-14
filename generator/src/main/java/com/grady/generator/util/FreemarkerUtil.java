@@ -17,8 +17,9 @@ import java.util.Map;
  * @Version 1.0
  */
 public class FreemarkerUtil {
-
-    static String ftlPath = "generator\\src\\main\\java\\com\\grady\\generator\\ftl\\";
+    //windows
+    //static String ftlPath = "generator\\src\\main\\java\\com\\grady\\generator\\ftl\\";
+    static String ftlPath = "generator/src/main/java/com/grady/generator/ftl/";
     static Template temp;
 
     public static void initConfig(String ftlName) throws IOException {

@@ -27,26 +27,26 @@
         </jdbcConnection>
 
         <!-- domain类的位置 -->
-        <javaModelGenerator targetProject="src\main\java"
+        <javaModelGenerator targetProject="src/main/java"
                             targetPackage="com.grady.server.domain"/>
 
         <!-- mapper xml的位置 -->
-        <sqlMapGenerator targetProject="src\main\resources"
+        <sqlMapGenerator targetProject="src/main/resources"
                          targetPackage="mapper"/>
 
         <!-- mapper类的位置 -->
-        <javaClientGenerator targetProject="src\main\java"
+        <javaClientGenerator targetProject="src/main/java"
                              targetPackage="com.grady.server.mapper"
                              type="XMLMAPPER" />
 
         <!--<table tableName="category" domainObjectName="Category"/>-->
        <!-- <table tableName="section" domainObjectName="Section"/>-->
         <!--<table tableName="course" domainObjectName="Course"/>-->
-<!--        <table tableName="course_content" domainObjectName="CourseContent"/>-->
+        <table tableName="course_content" domainObjectName="CourseContent"/>
 <!--        <table tableName="course_content_file" domainObjectName="CourseContentFile"/>-->
 <!--        <table tableName="teacher" domainObjectName="Teacher"/>-->
 <!--        <table tableName="file" domainObjectName="File"/>-->
-        <table tableName="course_category" domainObjectName="CourseCategory"/>
+        <!--<table tableName="course_category" domainObjectName="CourseCategory"/>-->
 <!--        <table tableName="resource" domainObjectName="Resource"/>-->
 <!--        <table tableName="role" domainObjectName="Role"/>-->
 <!--        <table tableName="role_resource" domainObjectName="RoleResource"/>-->

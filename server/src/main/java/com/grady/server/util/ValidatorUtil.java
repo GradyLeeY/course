@@ -3,6 +3,8 @@ package com.grady.server.util;
 import com.grady.server.exception.ValidatorException;
 import org.springframework.util.StringUtils;
 
+import java.awt.*;
+
 /**
  * @Author Grady
  * @Date 2020/6/7 12:41
@@ -28,4 +30,5 @@ public class ValidatorUtil {
             throw new ValidatorException(fieldName + "长度" + min + "~" + max + "位");
         }
     }
+
 }
