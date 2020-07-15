@@ -51,6 +51,9 @@
               <button v-on:click="editContent(course)" class="btn btn-white btn-xs btn-info btn-round">
                 内容
               </button>&nbsp;
+              <button v-on:click="openSortModal(course)" class="btn btn-purple btn-xs btn-info btn-round">
+                排序
+              </button>&nbsp;
               <button v-on:click="edit(course)" class="btn btn-white btn-xs btn-info btn-round">
                 编辑
               </button>&nbsp;
@@ -143,7 +146,7 @@
               <div class="form-group">
                 <label class="col-sm-2 control-label">顺序</label>
                 <div class="col-sm-10">
-                  <input v-model="course.sort" class="form-control">
+                  <input v-model="course.sort" class="form-control" disabled>
                 </div>
               </div>
             </form>
