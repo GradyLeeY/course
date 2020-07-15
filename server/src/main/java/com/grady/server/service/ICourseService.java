@@ -3,6 +3,7 @@ package com.grady.server.service;
 import com.grady.server.domain.Course;
 import com.grady.server.dto.CourseDto;
 import com.grady.server.dto.PageDto;
+import com.grady.server.dto.SortDto;
 
 /**
  * @Author Grady
@@ -18,4 +19,6 @@ public interface ICourseService {
     void delete(String id);
 
     int updateTime(String courseId);
+
+    void sort(SortDto sortDto);
 }
