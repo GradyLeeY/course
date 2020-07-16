@@ -191,5 +191,4 @@
     set content = #{content,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=CHAR}
   </update>
-
 </mapper>

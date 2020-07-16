@@ -31,5 +31,4 @@ public interface CourseContentMapper {
     int updateByPrimaryKeySelective(CourseContent record);
 
     int updateByPrimaryKeyWithBLOBs(CourseContent record);
-
 }
