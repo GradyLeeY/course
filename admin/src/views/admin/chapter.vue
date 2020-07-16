@@ -96,14 +96,14 @@
     },
     mounted: function() {
       let _this = this;
-      let course = SessionStorage.get("course") || {};
+      let course = SessionStorage.get(SESSION_KEY_COURSE) || {};
       if (Tool.isEmpty(course)) {
         _this.$router.push("/welcome");
       }
       _this.course = course;
       _this.list(1);
       // sidebar激活样式方法一
-      // this.$parent.activeSidebar("business-chapter-sidebar");
+      this.$parent.activeSidebar("business-course-sidebar");
 
     },
     methods: {
@@ -190,7 +190,7 @@
       },
       toSection(chapter){
         let _this = this;
-        SessionStorage.set("chapter",chapter);
+        SessionStorage.set(SESSION_KEY_CHAPTER,chapter);
         _this.$router.push("/business/section");
       }
     }
