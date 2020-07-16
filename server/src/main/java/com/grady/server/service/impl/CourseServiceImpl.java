@@ -6,6 +6,7 @@ import com.grady.server.domain.Course;
 import com.grady.server.domain.CourseExample;
 import com.grady.server.dto.CourseDto;
 import com.grady.server.dto.PageDto;
+import com.grady.server.dto.SortDto;
 import com.grady.server.mapper.CourseMapper;
 import com.grady.server.service.ICourseCategoryService;
 import com.grady.server.service.ICourseService;
@@ -35,14 +36,13 @@ public class CourseServiceImpl implements ICourseService {
     @Override
     public void list(PageDto pageDto){
         //插件分页语句规则，调用startpage方法后执行的第一个select语句会进行分页
-        PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
+        PageHelper.startPage(pageDto.getPage(), pageDto.getSize());
         CourseExample courseExample = new CourseExample();
+        courseExample.setOrderByClause("sort asc");
         List<Course> courseList = courseMapper.selectByExample(courseExample);
-            courseExample.setOrderByClause("sort asc");
         PageInfo<Course> pageInfo = new PageInfo<>(courseList);
         pageDto.setTotal(pageInfo.getTotal());
-
-        List<CourseDto> courseDtoList = CopyUtil.copyList(courseList,CourseDto.class);
+        List<CourseDto> courseDtoList = CopyUtil.copyList(courseList, CourseDto.class);
         pageDto.setList(courseDtoList);
     }
 
@@ -54,8 +54,8 @@ public class CourseServiceImpl implements ICourseService {
             this.insert(course);
         }else {
             this.update(course);
-            iCourseCategoryService.saveBatch(courseDto.getId(), courseDto.getCategorys());
         }
+        iCourseCategoryService.saveBatch(course.getId(), courseDto.getCategorys());
     }
 
     @Override
@@ -66,6 +66,20 @@ public class CourseServiceImpl implements ICourseService {
     @Override
     public int updateTime(String courseId){
         return courseMapper.updateTime(courseId);
+    }
+
+    @Override
+    public void sort(SortDto sortDto) {
+        courseMapper.updateSort(sortDto);
+
+        //如果排序值变大
+        if (sortDto.getNewSort() > sortDto.getOldSort()){
+            courseMapper.moveSortsBackward(sortDto);
+        }
+        //如果排序值变小
+        if (sortDto.getNewSort() < sortDto.getOldSort()){
+            courseMapper.moveSortsForward(sortDto);
+        }
     }
 
     private void update(Course course) {

@@ -355,4 +355,20 @@
   <update id="updateTime">
     UPDATE course c SET time = (select sum(`time`) from `section` where course_id = #{courseId}) WHERE c.id = #{courseId}
   </update>
+
+  <update id="updateSort" parameterType="com.grady.server.dto.SortDto">
+    update course set `sort`= #{newSort} where id = #{id}
+  </update>
+
+  <!--<![CDATA[   ]]> 是什么，这是XML语法。在CDATA内部的所有内容都会被解析器忽略。-->
+  <update id="moveSortsBackward" parameterType="com.grady.server.dto.SortDto">
+    <![CDATA[
+    update course set `sort`= (`sort`+1) where `sort` >= #{newSort} and `sort` <= #{oldSort} and id != #{id}
+    ]]>
+  </update>
+  <update id="moveSortsForward" parameterType="com.grady.server.dto.SortDto">
+    <![CDATA[
+    update course set `sort`= (`sort`-1) where `sort` <= #{newSort} and `sort` >= #{oldSort} and id != #{id}
+    ]]>
+  </update>
 </mapper>
