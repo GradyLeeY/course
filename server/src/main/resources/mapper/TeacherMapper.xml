@@ -86,7 +86,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from teacher
     where id = #{id,jdbcType=CHAR}
@@ -102,11 +102,11 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.grady.server.domain.Teacher">
-    insert into teacher (id, `name`, nickname, 
-      image, `position`, motto, 
+    insert into teacher (id, `name`, nickname,
+      image, `position`, motto,
       intro)
-    values (#{id,jdbcType=CHAR}, #{name,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
-      #{image,jdbcType=VARCHAR}, #{position,jdbcType=VARCHAR}, #{motto,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=CHAR}, #{name,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR},
+      #{image,jdbcType=VARCHAR}, #{position,jdbcType=VARCHAR}, #{motto,jdbcType=VARCHAR},
       #{intro,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.grady.server.domain.Teacher">

@@ -90,6 +90,14 @@
                 </div>
               </div>
               <div class="form-group">
+                <label class="col-sm-2 control-label">讲师</label>
+                <div class="col-sm-10">
+                  <select v-model="course.teacherId" class="form-control">
+                    <option v-for="o in teachers" v-bind:value="o.id">{{o.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
                 <label class="col-sm-2 control-label">概述</label>
                 <div class="col-sm-10">
                   <textarea v-model="course.summary" class="form-control"></textarea>
@@ -250,6 +258,7 @@
         COURSE_CHARGE: COURSE_CHARGE,
         COURSE_STATUS: COURSE_STATUS,
         categorys: [],
+        teachers: [],
         tree: {},
         saveContentLabel:"",
         sort: {
@@ -263,6 +272,7 @@
       let _this = this;
       _this.$refs.pagination.size = 5;
       _this.allCategory();
+      _this.allTeachers();
       _this.list(1);
       // sidebar激活样式方法一
       // this.$parent.activeSidebar("business-course-sidebar");
@@ -433,6 +443,13 @@
         })
       },
 
+      allTeachers(){
+        let _this = this;
+        _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/teacher/all').then((response)=>{
+          let resp = response.data;
+          _this.teachers = resp.content;
+        })
+      },
       initTree() {
         let _this = this;
         let setting = {

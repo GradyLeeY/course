@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin/teacher")
@@ -21,6 +22,13 @@ public class TeacherController {
     @Resource
     private ITeacherService iteacherService;
 
+    @PostMapping("/all")
+    public ResponseDto all(){
+        ResponseDto responseDto = new ResponseDto();
+        List<TeacherDto> all = iteacherService.all();
+        responseDto.setContent(all);
+        return responseDto;
+    }
     /**
      * 列表查询
      */

@@ -140,7 +140,6 @@
       _this.list(1);
       // sidebar激活样式方法一
       // this.$parent.activeSidebar("business-teacher-sidebar");
-
     },
     methods: {
       /**
@@ -151,7 +150,6 @@
         _this.teacher = {};
         $("#form-modal").modal("show");
       },
-
       /**
        * 点击【编辑】
        */
@@ -160,7 +158,6 @@
         _this.teacher = $.extend({}, teacher);
         $("#form-modal").modal("show");
       },
-
       /**
        * 列表查询
        */
@@ -175,16 +172,13 @@
           let resp = response.data;
           _this.teachers = resp.content.list;
           _this.$refs.pagination.render(page, resp.content.total);
-
         })
       },
-
       /**
        * 点击【保存】
        */
       save() {
         let _this = this;
-
         // 保存校验
         if (1 != 1
           || !Validator.require(_this.teacher.name, "姓名")
@@ -197,7 +191,6 @@
         ) {
           return;
         }
-
         Loading.show();
         _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/teacher/save', _this.teacher).then((response)=>{
           Loading.hide();
@@ -211,7 +204,6 @@
           }
         })
       },
-
       /**
        * 点击【删除】
        */
@@ -229,12 +221,6 @@
           })
         });
       },
-
-      afterUpload(resp) {
-        let _this = this;
-        let image = resp.content.path;
-        _this.teacher.image = image;
-      }
     }
   }
 </script>
