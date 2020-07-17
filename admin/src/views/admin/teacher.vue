@@ -86,6 +86,7 @@
                 <label class="col-sm-2 control-label">头像</label>
                 <div class="col-sm-10">
                   <input type="file" v-on:change="uploadImage()" id="file-upload-input" />
+                  <img v-bind:src="teacher.image" class="img-responsive">
                 </div>
               </div>
               <div class="form-group">
@@ -222,6 +223,8 @@
         formData.append('file',document.querySelector("#file-upload-input").files[0]);
         _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/admin/upload',formData).then((response)=>{
           let resp = response.data;
+          let img = resp.content;
+          _this.teacher.image = img;
         })
 
       }
