@@ -24,21 +24,22 @@ public class UploadController {
 
     private static final Logger LOG = LoggerFactory.getLogger(UploadController.class);
     public static final String BUSINESS_NAME = "文件上传";
-    public static final String filePreffix = "D:/Grady/Git/course/doc/image/";
 
     @PostMapping("/upload")
     public ResponseDto upload(@RequestParam MultipartFile file) throws IOException {
-        LOG.info("上传文件开始:{}",file);
+        LOG.info("上传文件开始：{}", file);
         LOG.info(file.getOriginalFilename());
         LOG.info(String.valueOf(file.getSize()));
 
-        //保存到本地
+        // 保存文件到本地
         String fileName = file.getOriginalFilename();
         String key = UuidUtil.getShortUuid();
-        String fullPath =  filePreffix+key+"-"+fileName;
+
+        String fullPath = "D:/file/grady/course/teacher/" + key + "-" + fileName;
         File dest = new File(fullPath);
         file.transferTo(dest);
         LOG.info(dest.getAbsolutePath());
+
         ResponseDto responseDto = new ResponseDto();
         return responseDto;
     }
