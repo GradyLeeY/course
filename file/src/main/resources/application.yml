@@ -9,3 +9,7 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
+
+file:
+  path: D:/file/grady/course/
+  domain: http://127.0.0.1:9000/file/
