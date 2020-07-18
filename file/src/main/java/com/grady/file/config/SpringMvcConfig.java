@@ -19,5 +19,6 @@ public class SpringMvcConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/f/**").addResourceLocations("file:" + FILE_PATH);
         //http://127.0.0.1:9003/file/f/teacher/6XfOcgLk-Grady.jpg
+        //http://127.0.0.1:9000/file/f/teacher/yJi1Kq27.jpg
     }
 }
