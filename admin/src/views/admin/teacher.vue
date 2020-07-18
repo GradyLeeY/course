@@ -85,11 +85,10 @@
               <div class="form-group">
                 <label class="col-sm-2 control-label">头像</label>
                 <div class="col-sm-10">
-                  <button type="button" v-on:click="selectImage()" class="btn btn-white btn-default btn-round">
-                    <i class="ace-icon fa fa-upload"></i>
-                    上传头像
-                  </button>
-                  <input class="hidden" type="file" v-on:change="uploadImage()" id="file-upload-input" ref="file" />
+                  <file v-bind:id="'image-upload'"
+                        v-bind:text="'上传头像'"
+                        v-bind:suffixs="['jpg', 'jpeg', 'png']"
+                        v-bind:after-upload="afterUpload"></file>
                   <div class="row" v-show="teacher.image">
                     <div class="col-md-4">
                       <img v-bind:src="teacher.image" class="img-responsive">
@@ -129,8 +128,9 @@
 
 <script>
   import Pagination from "../../components/pagination";
+  import File from "../../components/file";
   export default {
-    components: {Pagination},
+    components: {Pagination,File},
     name: "business-teacher",
     data: function() {
       return {
@@ -225,34 +225,10 @@
           })
         });
       },
-      uploadImage(){
+      afterUpload(resp){
         let _this = this;
-        let file = _this.$refs.file.files[0];
-        let fileName = file.name;
-        let suffix = fileName.substring(fileName.lastIndexOf(".")+1,fileName.length).toLowerCase();
-        let suffixs = ["jpg","png","jpeg"];
-        let validSuffix = false;
-        for (let i = 0; i < suffix.length; i++) {
-          if (suffixs[i] === suffix){
-            validSuffix = true;
-            break
-          }
-        }
-        if (!validSuffix){
-          Toast.warning("文件格式不正确！只支持上传:"+suffixs.join(","));
-          return
-        }
-        let formData = new window.FormData();
-        formData.append('file',file);
-        _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/admin/upload',formData).then((response)=>{
-          let resp = response.data;
-          let img = resp.content;
-          _this.teacher.image = img;
-        })
-
-      },
-      selectImage(){
-        $('#file-upload-input').trigger('click');
+        let image = resp.content;
+        _this.teacher.image = image;
       }
     }
   }
