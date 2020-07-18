@@ -1,9 +1,7 @@
 package com.grady.generator.enums;
 
-import com.grady.server.enums.CourseChargeEnum;
-import com.grady.server.enums.CourseLevelEnum;
-import com.grady.server.enums.CourseStatusEnum;
-import com.grady.server.enums.SectionChargeEnum;
+import com.grady.server.enums.*;
+
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
@@ -26,6 +24,7 @@ public class EnumGenerator {
             toJson(SectionChargeEnum.class, bufferObject, bufferArray);
             toJson(CourseLevelEnum.class, bufferObject, bufferArray);
             toJson(CourseChargeEnum.class, bufferObject, bufferArray);
+            toJson(FileUseEnum.class, bufferObject, bufferArray);
             StringBuffer buffer = bufferObject.append("\r\n").append(bufferArray);
             writeJs(buffer);
         } catch (Exception e) {

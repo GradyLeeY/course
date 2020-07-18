@@ -1,4 +1,4 @@
-package com.course.file.config;
+package com.grady.file.config;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
@@ -16,8 +16,8 @@ import org.springframework.core.env.Environment;
  */
 @SpringBootApplication
 @EnableEurekaClient
-@ComponentScan("com.course")
-@MapperScan("com.course.server.mapper")
+@ComponentScan("com.grady")
+@MapperScan("com.grady.server.mapper")
 public class FileApplication {
     private static final Logger LOG = LoggerFactory.getLogger(FileApplication.class);
 

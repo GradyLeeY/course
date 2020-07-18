@@ -1,4 +1,4 @@
-package com.course.file.config;
+package com.grady.file.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.course.file.controller.admin;
+package com.grady.file.controller.admin;
 
 import com.grady.server.dto.ResponseDto;
 import com.grady.server.util.UuidUtil;
