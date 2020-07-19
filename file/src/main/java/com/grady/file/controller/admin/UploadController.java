@@ -2,6 +2,7 @@ package com.grady.file.controller.admin;
 
 import com.grady.server.dto.FileDto;
 import com.grady.server.dto.ResponseDto;
+import com.grady.server.enums.FileUseEnum;
 import com.grady.server.service.IFileService;
 import com.grady.server.util.UuidUtil;
 import org.slf4j.Logger;
@@ -39,16 +40,24 @@ public class UploadController {
     private IFileService iFileService;
 
     @PostMapping("/upload")
-    public ResponseDto upload(@RequestParam MultipartFile file) throws IOException {
-        LOG.info("上传文件开始：{}", file);
+    public ResponseDto upload(@RequestParam MultipartFile file,String use) throws IOException {
         LOG.info(file.getOriginalFilename());
         LOG.info(String.valueOf(file.getSize()));
 
         // 保存文件到本地
+        FileUseEnum fileUseEnum = FileUseEnum.getByCode(use);
+
         String key = UuidUtil.getShortUuid();
+
         String fileName = file.getOriginalFilename();
         String suffix = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
-        String path = "teacher/" + key + "." + suffix;
+        String dir = fileUseEnum.name().toLowerCase();
+        File fullDir = new File(dir);
+        if (!fullDir.exists()){
+            fullDir.mkdir();
+        }
+
+        String path = dir + File.separator + key + "." + suffix;
         String fullPath = FILE_PATH + path;
         File dest = new File(fullPath);
         file.transferTo(dest);
@@ -60,6 +69,7 @@ public class UploadController {
         fileDto.setName(fileName);
         fileDto.setSize(Math.toIntExact(file.getSize()));
         fileDto.setSuffix(suffix);
+        fileDto.setUse(use);
         iFileService.save(fileDto);
         LOG.info("保存文件记录结束");
 
