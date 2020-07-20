@@ -39,19 +39,19 @@
         <td>{{section.id}}</td>
         <td>{{section.title}}</td>
         <td>{{section.video}}</td>
-        <td>{{section.time|formatSecond}}</td>
+        <td>{{section.time | formatSecond}}</td>
         <td>{{SECTION_CHARGE | optionKV(section.charge)}}</td>
         <td>{{section.sort}}</td>
-        <td>
-          <div class="hidden-sm hidden-xs btn-group">
-            <button v-on:click="edit(section)" class="btn btn-xs btn-info">
-              <i class="ace-icon fa fa-pencil bigger-120"></i>
-            </button>
-            <button v-on:click="del(section.id)" class="btn btn-xs btn-danger">
-              <i class="ace-icon fa fa-trash-o bigger-120"></i>
-            </button>
-          </div>
-        </td>
+      <td>
+        <div class="hidden-sm hidden-xs btn-group">
+          <button v-on:click="edit(section)" class="btn btn-xs btn-info">
+            <i class="ace-icon fa fa-pencil bigger-120"></i>
+          </button>
+          <button v-on:click="del(section.id)" class="btn btn-xs btn-danger">
+            <i class="ace-icon fa fa-trash-o bigger-120"></i>
+          </button>
+        </div>
+      </td>
       </tr>
       </tbody>
     </table>
@@ -93,7 +93,7 @@
                         v-bind:after-upload="afterUpload"></file>
                   <div v-show="section.video" class="row">
                     <div class="col-md-10">
-                      <video v-bind:src="section.video" controls="controls"></video>
+                      <video v-bind:src="section.video" id="video" controls="controls"></video>
                     </div>
                   </div>
                 </div>
@@ -134,7 +134,7 @@
   import Pagination from "../../components/pagination";
   import File from "../../components/file";
   export default {
-    components: {Pagination,File},
+    components: {Pagination, File},
     name: "business-section",
     data: function() {
       return {
@@ -148,6 +148,7 @@
     },
     mounted: function() {
       let _this = this;
+      _this.$refs.pagination.size = 5;
       let course = SessionStorage.get(SESSION_KEY_COURSE) || {};
       let chapter = SessionStorage.get(SESSION_KEY_CHAPTER) || {};
       if (Tool.isEmpty(course) || Tool.isEmpty(chapter)) {
@@ -156,9 +157,8 @@
       _this.course = course;
       _this.chapter = chapter;
       _this.list(1);
-     // sidebar激活样式方法一
+      // sidebar激活样式方法一
       this.$parent.activeSidebar("business-course-sidebar");
-       this.$parent.activeSidebar("business-course-sidebar");
 
     },
     methods: {
@@ -248,15 +248,27 @@
           })
         });
       },
+
       afterUpload(resp) {
         let _this = this;
         let video = resp.content.path;
         _this.section.video = video;
-      }
+        _this.getTime();
+      },
+
+      /**
+       * 获取时长
+       */
+      getTime() {
+        let _this = this;
+        let ele = document.getElementById("video");
+        _this.section.time = parseInt(ele.duration, 10);
+      },
     }
   }
 </script>
-<style>
+
+<style scoped>
   video {
     width: 100%;
     height: auto;
