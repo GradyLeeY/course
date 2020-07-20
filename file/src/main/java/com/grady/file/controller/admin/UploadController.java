@@ -72,9 +72,9 @@ public class UploadController {
         fileDto.setUse(use);
         iFileService.save(fileDto);
         LOG.info("保存文件记录结束");
-
+        fileDto.setPath(FILE_DOMAIN+path);
         ResponseDto responseDto = new ResponseDto();
-        responseDto.setContent(FILE_DOMAIN + path);
+        responseDto.setContent(fileDto);
         return responseDto;
     }
 }
