@@ -45,6 +45,7 @@
                 {{teacher.position}}
               </div>
             </div>
+
             <p>
               <span class="blue bolder bigger-150">{{course.price}}&nbsp;<i class="fa fa-rmb"></i></span>&nbsp;
             </p>
@@ -58,10 +59,10 @@
               <button v-on:click="toChapter(course)" class="btn btn-white btn-xs btn-info btn-round">
                 大章
               </button>&nbsp;
-              <button v-on:click="editContent(course)" class="btn btn-white btn-xs btn-info btn-round">
+              <button v-on:click="toContent(course)" class="btn btn-white btn-xs btn-info btn-round">
                 内容
               </button>&nbsp;
-              <button v-on:click="openSortModal(course)" class="btn btn-purple btn-xs btn-info btn-round">
+              <button v-on:click="openSortModal(course)" class="btn btn-white btn-xs btn-info btn-round">
                 排序
               </button>&nbsp;
               <button v-on:click="edit(course)" class="btn btn-white btn-xs btn-info btn-round">
@@ -94,25 +95,24 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-sm-2 control-label">名称</label>
-                <div class="col-sm-10">
-                  <input v-model="course.name" class="form-control">
-                </div>
-              </div>
-              <div class="form-group">
                 <label class="col-sm-2 control-label">封面</label>
                 <div class="col-sm-10">
                   <file v-bind:input-id="'image-upload'"
                         v-bind:text="'上传封面'"
                         v-bind:suffixs="['jpg', 'jpeg', 'png']"
-                        v-bind:use="FILE_USE.TEACHER.key"
-                        v-bind:after-upload="afterUpload">
-                  </file>
-                  <div class="row" v-show="course.image">
+                        v-bind:use="FILE_USE.COURSE.key"
+                        v-bind:after-upload="afterUpload"></file>
+                  <div v-show="course.image" class="row">
                     <div class="col-md-6">
                       <img v-bind:src="course.image" class="img-responsive">
                     </div>
                   </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">名称</label>
+                <div class="col-sm-10">
+                  <input v-model="course.name" class="form-control">
                 </div>
               </div>
               <div class="form-group">
@@ -141,7 +141,6 @@
                   <input v-model="course.price" class="form-control">
                 </div>
               </div>
-
               <div class="form-group">
                 <label class="col-sm-2 control-label">级别</label>
                 <div class="col-sm-10">
@@ -183,72 +182,6 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
             <button v-on:click="save()" type="button" class="btn btn-primary">保存</button>
-          </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-
-    <div id="course-content-modal" class="modal fade" tabindex="-1" role="dialog" style="overflow:auto;">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">内容编辑</h4>
-          </div>
-          <div class="modal-body">
-
-            <file v-bind:input-id="'content-file-upload'"
-                  v-bind:text="'上传文件1'"
-                  v-bind:suffixs="['jpg', 'jpeg', 'png', 'mp4']"
-                  v-bind:use="FILE_USE.COURSE.key"
-                  v-bind:after-upload="afterUploadContentFile"></file>
-            <br>
-            <table id="file-table" class="table  table-bordered table-hover">
-              <thead>
-              <tr>
-                <th>名称</th>
-                <th>地址</th>
-                <th>大小</th>
-                <th>操作</th>
-              </tr>
-              </thead>
-
-              <tbody>
-              <tr v-for="(f, i) in files" v-bind:key="f.id">
-                <td>{{f.name}}</td>
-                <td>{{f.url}}</td>
-                <td>{{f.size | formatFileSize}}</td>
-                <td>
-                  <button v-on:click="delFile(f)" class="btn btn-white btn-xs btn-warning btn-round">
-                    <i class="ace-icon fa fa-times red2"></i>
-                    删除
-                  </button>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-            <form class="form-horizontal">
-              <div class="form-group">
-                <div class="col-lg-12">
-                  {{saveContentLabel}}
-                </div>
-              </div>
-              <div class="form-group">
-                <div class="col-lg-12">
-                  <div id="content"></div>
-                </div>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-white btn-default btn-round" data-dismiss="modal">
-              <i class="ace-icon fa fa-times"></i>
-              取消
-            </button>
-            <button type="button" class="btn btn-white btn-info btn-round" v-on:click="saveContent()">
-              <i class="ace-icon fa fa-plus blue"></i>
-              保存
-            </button>
           </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
@@ -301,7 +234,7 @@
   import Pagination from "../../components/pagination";
   import File from "../../components/file";
   export default {
-    components: {Pagination,File},
+    components: {Pagination, File},
     name: "business-course",
     data: function() {
       return {
@@ -312,22 +245,21 @@
         COURSE_STATUS: COURSE_STATUS,
         FILE_USE: FILE_USE,
         categorys: [],
-        teachers: [],
-        files: [],
         tree: {},
-        saveContentLabel:"",
+        saveContentLabel: "",
         sort: {
           id: "",
           oldSort: 0,
           newSort: 0
-        }
+        },
+        teachers: [],
       }
     },
     mounted: function() {
       let _this = this;
       _this.$refs.pagination.size = 5;
       _this.allCategory();
-      _this.allTeachers();
+      _this.allTeacher();
       _this.list(1);
       // sidebar激活样式方法一
       // this.$parent.activeSidebar("business-course-sidebar");
@@ -370,13 +302,14 @@
           let resp = response.data;
           _this.courses = resp.content.list;
           _this.$refs.pagination.render(page, resp.content.total);
+
         })
       },
 
       /**
        * 点击【保存】
        */
-      save() {
+      save(page) {
         let _this = this;
 
         // 保存校验
@@ -410,57 +343,6 @@
         })
       },
 
-      saveContent(){
-        let _this = this;
-        let content = $("#content").summernote("code");
-        _this.$ajax.post(process.env.VUE_APP_SERVER+'/business/admin/course/save-content',{
-          id:_this.course.id,
-          content: content
-        }).then((response)=>{
-            let resp = response.data;
-            if (resp.success){
-              let now = Tool.dateFormat("yyyy-MM-dd hh:mm:ss");
-              //let now = Tool.dateFormat("mm:ss");
-              _this.saveContentLabel = "最后保存时间：" + now;
-            }else {
-              Toast.warning(resp.message);
-            }
-        })
-      },
-      editContent(course){
-        let _this = this;
-        let id = course.id;
-        _this.course = course;
-        $("#content").summernote({
-          focus: true,
-          height: 300
-        });
-        // 先清空历史文本
-        $("#content").summernote('code', '');
-        _this.saveContentLabel = "";
-        // 加载内容文件列表
-        _this.listContentFiles();
-
-        _this.$ajax.get(process.env.VUE_APP_SERVER + '/business/admin/course/find-content/'+id).then((response)=>{
-            let resp = response.data;
-            if (resp.success){
-              //点击空白不会自动退出
-              $("#course-content-modal").modal({backdrop: 'static', keyboard: false});
-              if (resp.content){
-                $("#content").summernote('code', resp.content.content);
-              }
-              let saveContentInterval = setInterval(function () {
-                _this.saveContent(),5000
-              });
-              // 关闭内容框时，清空自动保存任务
-              $('#course-content-modal').on('hidden.bs.modal', function (e) {
-                clearInterval(saveContentInterval);
-              })
-            }else {
-              Toast.warning(resp.message);
-            }
-        })
-      },
       /**
        * 点击【删除】
        */
@@ -488,6 +370,15 @@
         _this.$router.push("/business/chapter");
       },
 
+      /**
+       * 点击【内容】
+       */
+      toContent(course) {
+        let _this = this;
+        SessionStorage.set(SESSION_KEY_COURSE, course);
+        _this.$router.push("/business/content");
+      },
+
       allCategory() {
         let _this = this;
         Loading.show();
@@ -500,13 +391,6 @@
         })
       },
 
-      allTeachers(){
-        let _this = this;
-        _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/teacher/all').then((response)=>{
-          let resp = response.data;
-          _this.teachers = resp.content;
-        })
-      },
       initTree() {
         let _this = this;
         let setting = {
@@ -553,7 +437,7 @@
         })
       },
 
-      openSortModal(course){
+      openSortModal(course) {
         let _this = this;
         _this.sort = {
           id: course.id,
@@ -566,67 +450,42 @@
       /**
        * 排序
        */
-      updateSort(){
+      updateSort() {
         let _this = this;
-        if (_this.sort.newSort === _this.sort.oldSort){
+        if (_this.sort.newSort === _this.sort.oldSort) {
           Toast.warning("排序没有变化");
-          return
+          return;
         }
-        _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/course/sort',_this.sort).then((response)=>{
-          let resp = response.data;
-          if (resp.success){
-            Toast.success("修改排序成功");
+        Loading.show();
+        _this.$ajax.post(process.env.VUE_APP_SERVER + "/business/admin/course/sort", _this.sort).then((res) => {
+          let response = res.data;
+
+          if (response.success) {
+            Toast.success("更新排序成功");
             $("#course-sort-modal").modal("hide");
             _this.list(1);
-          }else {
-            Toast.warning("更新排序失败");
+          } else {
+            Toast.error("更新排序失败");
           }
+        });
+      },
+
+      allTeacher() {
+        let _this = this;
+        Loading.show();
+        _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/teacher/all').then((response)=>{
+          Loading.hide();
+          let resp = response.data;
+          _this.teachers = resp.content;
         })
       },
-      afterUpload(resp){
+
+      afterUpload(resp) {
         let _this = this;
         let image = resp.content.path;
         _this.course.image = image;
       },
 
-      /**
-       * 上传内容文件后，保存内容文件记录
-       */
-      afterUploadContentFile(response){
-          let _this = this;
-          let file = response.content;
-          file.courseId = _this.course.id;
-          file.url = file.path;
-          _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/course-content-file/save', file).then((response)=>{
-            let resp = response.data;
-            if (resp.success) {
-              Toast.success("上传文件成功");
-              _this.files.push(resp.content);
-            }
-          });
-      },
-      listContentFiles(){
-        let _this = this;
-        _this.$ajax.get(process.env.VUE_APP_SERVER + '/business/admin/course-content-file/list/' + _this.course.id).then((response)=>{
-          let resp = response.data;
-          if (resp.success){
-            _this.files = resp.content;
-          }
-        });
-      },
-      //删除内容文件
-      delFile(f){
-        let _this = this;
-        Confirm.show("是否删除该文件",function () {
-          _this.$ajax.delete(process.env.VUE_APP_SERVER + '/business/admin/course-content-file/delete/' + f.id).then((response)=>{
-            let resp = response.data;
-            if (resp.success){
-              Toast.success("删除文件成功");
-              Tool.removeObj(_this.files, f);
-            }
-          });
-        })
-      }
     }
   }
 </script>
@@ -635,6 +494,7 @@
   .caption h3 {
     font-size: 20px;
   }
+
   @media (max-width: 1199px) {
     .caption h3 {
       font-size: 16px;
