@@ -86,7 +86,7 @@
               <div class="form-group">
                 <label class="col-sm-2 control-label">视频</label>
                 <div class="col-sm-10">
-                  <file v-bind:id="'video-upload'"
+                  <file v-bind:input-id="'video-upload'"
                         v-bind:text="'上传视频'"
                         v-bind:suffixs="['mp4']"
                         v-bind:use="FILE_USE.COURSE.key"
