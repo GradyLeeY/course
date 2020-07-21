@@ -92,7 +92,7 @@
                         v-bind:use="FILE_USE.COURSE.key"
                         v-bind:after-upload="afterUpload"></big-file>
                   <div v-show="section.video" class="row">
-                    <div class="col-md-10">
+                    <div class="col-md-9">
                       <video v-bind:src="section.video" id="video" controls="controls"></video>
                     </div>
                   </div>
@@ -203,7 +203,7 @@
       /**
        * 点击【保存】
        */
-      save() {
+      save(page) {
         let _this = this;
 
         // 保存校验
