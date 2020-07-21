@@ -36,17 +36,16 @@ public class UploadController {
     private IFileService iFileService;
 
     @PostMapping("/upload")
-    public ResponseDto upload(@RequestParam MultipartFile file,String use) throws IOException {
-        LOG.info(file.getOriginalFilename());
-        LOG.info(String.valueOf(file.getSize()));
+    public ResponseDto upload(@RequestParam MultipartFile shard,String use,Integer shardIndex,Integer shardSize,
+                              Integer shardTotal,String name,String suffix,Integer size) throws IOException {
+        LOG.info(shard.getOriginalFilename());
+        LOG.info(String.valueOf(shard.getSize()));
 
         // 保存文件到本地
         FileUseEnum fileUseEnum = FileUseEnum.getByCode(use);
 
         String key = UuidUtil.getShortUuid();
 
-        String fileName = file.getOriginalFilename();
-        String suffix = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
         String dir = fileUseEnum.name().toLowerCase();
         File fullDir = new File(dir);
         if (!fullDir.exists()){
@@ -56,16 +55,20 @@ public class UploadController {
         String path = dir + File.separator + key + "." + suffix;
         String fullPath = FILE_PATH + path;
         File dest = new File(fullPath);
-        file.transferTo(dest);
+        shard.transferTo(dest);
         LOG.info(dest.getAbsolutePath());
 
         LOG.info("保存文件记录开始");
         FileDto fileDto = new FileDto();
         fileDto.setPath(path);
-        fileDto.setName(fileName);
-        fileDto.setSize(Math.toIntExact(file.getSize()));
+        fileDto.setName(name);
         fileDto.setSuffix(suffix);
+        fileDto.setShardIndex(shardIndex);
         fileDto.setUse(use);
+        fileDto.setSize(size);
+        fileDto.setShardSize(shardSize);
+        fileDto.setShardTotal(shardTotal);
+        fileDto.setKey(key);
         iFileService.save(fileDto);
         LOG.info("保存文件记录结束");
         fileDto.setPath(FILE_DOMAIN+path);
