@@ -4,7 +4,7 @@ import com.grady.server.dto.FileDto;
 import com.grady.server.dto.ResponseDto;
 import com.grady.server.enums.FileUseEnum;
 import com.grady.server.service.IFileService;
-import com.grady.server.util.UuidUtil;
+import com.grady.server.util.Base64ToMultipartFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,20 +33,24 @@ public class UploadController {
     private String FILE_PATH;
 
     @Resource
-    private IFileService iFileService;
+    private IFileService fileService;
 
     @PostMapping("/upload")
-    public ResponseDto upload(@RequestParam MultipartFile shard,String use,Integer shardIndex,Integer shardSize,
-                              Integer shardTotal,String name,String suffix,Integer size,String key) throws IOException {
-        LOG.info(shard.getOriginalFilename());
-        LOG.info(String.valueOf(shard.getSize()));
+    public ResponseDto upload(@RequestBody FileDto fileDto) throws IOException {
+        LOG.info("上传文件开始");
+        String use = fileDto.getUse();
+        String key = fileDto.getKey();
+        String suffix = fileDto.getSuffix();
+        String shardBase64 = fileDto.getShard();
+        MultipartFile shard = Base64ToMultipartFile.base64ToMultipart(shardBase64);
 
         // 保存文件到本地
-        FileUseEnum fileUseEnum = FileUseEnum.getByCode(use);
+        FileUseEnum useEnum = FileUseEnum.getByCode(use);
 
-        String dir = fileUseEnum.name().toLowerCase();
-        File fullDir = new File(dir);
-        if (!fullDir.exists()){
+        //如果文件夹不存在则创建
+        String dir = useEnum.name().toLowerCase();
+        File fullDir = new File(FILE_PATH + dir);
+        if (!fullDir.exists()) {
             fullDir.mkdir();
         }
 
@@ -57,20 +61,11 @@ public class UploadController {
         LOG.info(dest.getAbsolutePath());
 
         LOG.info("保存文件记录开始");
-        FileDto fileDto = new FileDto();
         fileDto.setPath(path);
-        fileDto.setName(name);
-        fileDto.setSuffix(suffix);
-        fileDto.setShardIndex(shardIndex);
-        fileDto.setUse(use);
-        fileDto.setSize(size);
-        fileDto.setShardSize(shardSize);
-        fileDto.setShardTotal(shardTotal);
-        fileDto.setKey(key);
-        iFileService.save(fileDto);
-        LOG.info("保存文件记录结束");
-        fileDto.setPath(FILE_DOMAIN+path);
+        fileService.save(fileDto);
+
         ResponseDto responseDto = new ResponseDto();
+        fileDto.setPath(FILE_DOMAIN + path);
         responseDto.setContent(fileDto);
         return responseDto;
     }
