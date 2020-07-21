@@ -36,7 +36,7 @@
     methods: {
       uploadFile () {
         let _this = this;
-        let formData = new window.FormData();
+
         let file = _this.$refs.file.files[0];
 
         console.log(file);
@@ -51,9 +51,6 @@
 
         // 生成文件标识，标识多次上传的是不是同一个文件
         let key = hex_md5(file);
-        let key10 = parseInt(key, 16);
-        let key62 = Tool._10to62(key10);
-        console.log(key, key10, key62);
         /*
           d41d8cd98f00b204e9800998ecf8427e
           2.8194976848941264e+38
@@ -87,6 +84,7 @@
         let shardTotal = Math.ceil(size / shardSize); //总片数
 
         // // key："shard"必须和后端controller参数名一致
+       // let formData = new window.FormData();
         // formData.append('shard', fileShard);
         // formData.append('shardIndex', shardIndex);
         // formData.append('shardSize', shardSize);
@@ -120,7 +118,7 @@
             'name': file.name,
             'suffix': suffix,
             'size': file.size,
-            'key': key62
+            'key': key
           };
 
           Loading.show();
