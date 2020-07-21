@@ -8,15 +8,11 @@ import com.grady.server.util.UuidUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * @Author Grady
@@ -77,4 +73,44 @@ public class UploadController {
         responseDto.setContent(fileDto);
         return responseDto;
     }
+
+    @GetMapping("/merge")
+    public ResponseDto merge() throws Exception  {
+        File newFile = new File(FILE_PATH+"/course/test123.mp4");
+        FileOutputStream outputStream = new FileOutputStream(newFile,true);
+        FileInputStream inputStream = null;
+
+        byte[] bytes = new byte[1024*10*1024];
+        int len;
+        try {
+            inputStream = new FileInputStream(new File(FILE_PATH+"/course/OFAksBdN.blob"));
+            while ((len = inputStream.read(bytes)) != -1){
+                outputStream.write(bytes,0,len);
+            }
+            inputStream = new FileInputStream(new File(FILE_PATH+"/course/Qfy2JGx8.blob"));
+            while ((len = inputStream.read(bytes)) != -1){
+                outputStream.write(bytes,0,len);
+            }
+            inputStream = new FileInputStream(new File(FILE_PATH+"/course/BPfgDOO7.blob"));
+            while ((len = inputStream.read(bytes)) != -1){
+                outputStream.write(bytes,0,len);
+            }
+        }catch (IOException e){
+            LOG.error("分片合并异常", e);
+        }finally {
+            try {
+                if (inputStream != null){
+                    inputStream.close();
+                }
+                outputStream.close();
+            }catch (IOException e){
+                LOG.error("IO流关闭", e);
+            }
+        }
+
+        ResponseDto responseDto = new ResponseDto();
+        return responseDto;
+
+    }
+
 }
