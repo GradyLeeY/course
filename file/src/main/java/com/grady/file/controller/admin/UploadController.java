@@ -37,14 +37,12 @@ public class UploadController {
 
     @PostMapping("/upload")
     public ResponseDto upload(@RequestParam MultipartFile shard,String use,Integer shardIndex,Integer shardSize,
-                              Integer shardTotal,String name,String suffix,Integer size) throws IOException {
+                              Integer shardTotal,String name,String suffix,Integer size,String key) throws IOException {
         LOG.info(shard.getOriginalFilename());
         LOG.info(String.valueOf(shard.getSize()));
 
         // 保存文件到本地
         FileUseEnum fileUseEnum = FileUseEnum.getByCode(use);
-
-        String key = UuidUtil.getShortUuid();
 
         String dir = fileUseEnum.name().toLowerCase();
         File fullDir = new File(dir);

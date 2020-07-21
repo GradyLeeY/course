@@ -66,7 +66,7 @@
 
         let size = file.size;
         let shardTotal = Math.ceil(size/shardSize);
-
+        let key = hex_md5(file);
         // key："shard"必须和后端controller参数名一致
         formData.append('shard', fileShard);
         formData.append('shardIndex', shardIndex);
@@ -75,6 +75,7 @@
         formData.append('name', file.name);
         formData.append('suffix', suffix);
         formData.append('size', size);
+        formData.append('key', key);
         formData.append('use', _this.use);
         Loading.show();
         _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/admin/upload', formData).then((response)=>{

@@ -64,5 +64,18 @@ Tool = {
       }
     }
     return index;
+  },
+
+  //十进制转62进制
+  _10to62: function (number) {
+    let chars = "0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ";
+    let radix = chars.length;
+    let arr = [];
+    do {
+      let mod = number%radix;
+      number = (number - mod)%radix;
+      arr.unshift(chars[mod]);
+    }while (number);
+    return arr.join('');
   }
 }
