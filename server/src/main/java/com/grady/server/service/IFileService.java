@@ -1,5 +1,6 @@
 package com.grady.server.service;
 
+import com.grady.server.domain.File;
 import com.grady.server.dto.FileDto;
 import com.grady.server.dto.PageDto;
 
@@ -15,4 +16,6 @@ public interface IFileService {
     void save(FileDto fileDto);
 
     void delete(String id);
+
+    File selectByKey(String key);
 }

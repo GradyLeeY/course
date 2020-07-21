@@ -11,9 +11,11 @@ import com.grady.server.service.IFileService;
 import com.grady.server.util.CopyUtil;
 import com.grady.server.util.UuidUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
         import java.util.Date;
 /**
@@ -43,10 +45,12 @@ public class FileServiceImpl implements IFileService {
     @Override
     public void save(FileDto fileDto){
         File file = CopyUtil.copy(fileDto,File.class);
-        if (StringUtils.isEmpty(fileDto.getId())){
-            this.insert(file);
+        File fileDb = selectByKey(fileDto.getKey());
+        if(fileDb == null){
+            insert(file);
         }else {
-            this.update(file);
+            fileDb.setShardIndex(fileDto.getShardIndex());
+            update(fileDb);
         }
     }
 
@@ -54,6 +58,19 @@ public class FileServiceImpl implements IFileService {
     public void delete(String id){
         fileMapper.deleteByPrimaryKey(id);
     }
+
+    @Override
+    public File selectByKey(String key){
+        FileExample fileExample = new FileExample();
+        fileExample.createCriteria().andKeyEqualTo(key);
+        List<File> fileList = fileMapper.selectByExample(fileExample);
+        if (CollectionUtils.isEmpty(fileList)){
+            return null;
+        }else {
+            return fileList.get(0);
+        }
+    }
+
 
     private void update(File file) {
             file.setUpdatedAt(new Date());
@@ -67,4 +84,5 @@ public class FileServiceImpl implements IFileService {
         file.setId(UuidUtil.getShortUuid());
         fileMapper.insert(file);
     }
+
 }
