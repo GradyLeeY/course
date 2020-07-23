@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author Grady
@@ -88,9 +89,13 @@ public class UploadController {
     public ResponseDto check(@PathVariable String key){
         ResponseDto responseDto = new ResponseDto();
         FileDto fileDto = fileService.findKey(key);
+        if (fileDto != null){
+            fileDto.setPath(FILE_DOMAIN + fileDto.getPath());
+        }
         responseDto.setContent(fileDto);
         return responseDto;
     }
+
     public void merge(FileDto fileDto) throws Exception  {
         LOG.info("合并分片开始");
         long start = System.currentTimeMillis();
@@ -129,6 +134,7 @@ public class UploadController {
 
         LOG.info("合并分片结束");
         System.gc();
+        Thread.sleep(1000);
         //删除分片
         LOG.info("删除分片开始");
         for (int i = 0; i < shardTotal; i++) {

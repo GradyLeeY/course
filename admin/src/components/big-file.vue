@@ -103,6 +103,11 @@
             if (!content){
               console.log("没有找到文件记录，从1分片上传");
               _this.upload(param);
+            }else if (content.shardIndex === content.shardTotal){
+                //已经上传完分片,不需要再上传
+              Toast.success("上传成功");
+              _this.afterUpload(resp);
+              $("#" + _this.inputId + "-input").val("");
             }else {
               console.log("找到了文件记录从分片"+(content.shardIndex+1)+"开始上传");
               param.shardIndex = content.shardIndex + 1;
