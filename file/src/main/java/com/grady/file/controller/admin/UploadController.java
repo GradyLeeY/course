@@ -83,6 +83,14 @@ public class UploadController {
         return responseDto;
     }
 
+
+    @GetMapping("/check/{key}")
+    public ResponseDto check(@PathVariable String key){
+        ResponseDto responseDto = new ResponseDto();
+        FileDto fileDto = fileService.findKey(key);
+        responseDto.setContent(fileDto);
+        return responseDto;
+    }
     public void merge(FileDto fileDto) throws Exception  {
         LOG.info("合并分片开始");
         long start = System.currentTimeMillis();
@@ -128,7 +136,7 @@ public class UploadController {
             File delFile = new File(shardPath);
             try {
                 boolean delete = delFile.delete();
-                LOG.info("删除{},{}",mergePath,delete?"成功":"失败");
+                LOG.info("删除{},{}",shardPath,delete?"成功":"失败");
             }catch (RuntimeException e){
                 LOG.info("删除分片失败");
             }

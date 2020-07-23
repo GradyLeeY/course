@@ -18,4 +18,6 @@ public interface IFileService {
     void delete(String id);
 
     File selectByKey(String key);
+
+    FileDto findKey(String key);
 }

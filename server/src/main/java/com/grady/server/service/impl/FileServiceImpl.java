@@ -6,6 +6,7 @@ import com.grady.server.domain.File;
 import com.grady.server.domain.FileExample;
 import com.grady.server.dto.FileDto;
 import com.grady.server.dto.PageDto;
+import com.grady.server.dto.ResponseDto;
 import com.grady.server.mapper.FileMapper;
 import com.grady.server.service.IFileService;
 import com.grady.server.util.CopyUtil;
@@ -71,6 +72,11 @@ public class FileServiceImpl implements IFileService {
         }
     }
 
+
+    @Override
+    public FileDto findKey(String key){
+        return CopyUtil.copy(selectByKey(key),FileDto.class);
+    }
 
     private void update(File file) {
             file.setUpdatedAt(new Date());

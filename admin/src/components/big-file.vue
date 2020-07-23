@@ -75,7 +75,7 @@
         }
 
         // 文件分片
-        let shardSize = 10 * 1024 * 1024;    //以10MB为一个分片
+        let shardSize = 5 * 1024 * 1024;    //以10MB为一个分片
         let shardIndex = 1;		//分片索引，1表示第1个分片
         let size = file.size;
         let shardTotal = Math.ceil(size / shardSize); //总片数
@@ -91,10 +91,31 @@
           'key': key
         };
 
-        _this.upload(param);
+        _this.check(param);
       },
 
-      upload: function (param) {
+      check(param){
+        let _this = this;
+        _this.$ajax.get(process.env.VUE_APP_SERVER + '/file/admin/check/' + param.key).then((response)=>{
+          let resp = response.data;
+          if (resp.success){
+            let content = resp.content;
+            if (!content){
+              console.log("没有找到文件记录，从1分片上传");
+              _this.upload(param);
+            }else {
+              console.log("找到了文件记录从分片"+(content.shardIndex+1)+"开始上传");
+              param.shardIndex = content.shardIndex + 1;
+              _this.upload(param);
+            }
+          }else {
+            Toast.warning("文件上传失败");
+            $("#" + _this.inputId + "-input").val("");
+          }
+
+        });
+      },
+      upload(param) {
         let _this = this;
         let shardIndex = param.shardIndex;
         let shardTotal = param.shardTotal;
@@ -126,7 +147,7 @@
         fileReader.readAsDataURL(fileShard);
       },
 
-      getFileShard: function (shardIndex, shardSize) {
+      getFileShard(shardIndex, shardSize) {
         let _this = this;
         let file = _this.$refs.file.files[0];
         let start = (shardIndex - 1) * shardSize;	//当前分片起始位置
