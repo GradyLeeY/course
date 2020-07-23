@@ -85,11 +85,11 @@
               <div class="form-group">
                 <label class="col-sm-2 control-label">头像</label>
                 <div class="col-sm-10">
-                  <file v-bind:input-id="'image-upload'"
+                  <big-file v-bind:input-id="'image-upload'"
                         v-bind:text="'上传头像'"
                         v-bind:suffixs="['jpg', 'jpeg', 'png']"
                         v-bind:use="FILE_USE.TEACHER.key"
-                        v-bind:after-upload="afterUpload"></file>
+                        v-bind:after-upload="afterUpload"></big-file>
                   <div class="row" v-show="teacher.image">
                     <div class="col-md-4">
                       <img v-bind:src="teacher.image" class="img-responsive">
@@ -130,8 +130,9 @@
 <script>
   import Pagination from "../../components/pagination";
   import File from "../../components/file";
+  import BigFile from "../../components/big-file";
   export default {
-    components: {Pagination,File},
+    components: {BigFile, Pagination,File},
     name: "business-teacher",
     data: function() {
       return {

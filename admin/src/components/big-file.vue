@@ -50,7 +50,7 @@
         */
 
         // 生成文件标识，标识多次上传的是不是同一个文件
-        let key = hex_md5(file);
+        let key = hex_md5(file.name+file.size+file.type);
         /*
           d41d8cd98f00b204e9800998ecf8427e
           2.8194976848941264e+38
