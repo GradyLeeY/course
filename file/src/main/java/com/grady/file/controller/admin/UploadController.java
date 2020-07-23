@@ -120,6 +120,19 @@ public class UploadController {
         }
 
         LOG.info("合并分片结束");
+        System.gc();
+        //删除分片
+        LOG.info("删除分片开始");
+        for (int i = 0; i < shardTotal; i++) {
+            String shardPath = mergePath + "." +(i+1);
+            File delFile = new File(shardPath);
+            try {
+                boolean delete = delFile.delete();
+                LOG.info("删除{},{}",mergePath,delete?"成功":"失败");
+            }catch (RuntimeException e){
+                LOG.info("删除分片失败");
+            }
+        }
     }
 
 }
