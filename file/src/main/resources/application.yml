@@ -17,3 +17,10 @@ eureka:
 file:
   path: D:/file/grady/course/
   domain: http://127.0.0.1:9000/file/f/
+
+#oss
+accessKeyId: LTAI4GKCEgGRvFBxkwzLpv2c
+accessKeySecret: VoeKD8tF3RNqxLe3BhtcfLXeAq0Rxo
+endpoint: http://oss-cn-shanghai.aliyuncs.com
+ossDomain: http://grady.oss-cn-shanghai.aliyuncs.com/
+bucket: grady
