@@ -23,7 +23,9 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping("/admin")
 @RestController
 public class UploadController {
-
+//用户登录名称 vod@1062195589980203.onaliyun.com
+//AccessKey ID LTAI4GBtnYvqgVkGKZj4uvBz
+//AccessKey Secret BHlNwmbpe5kj9IHVMjw3h1bNQq4Xu8
     private static final Logger LOG = LoggerFactory.getLogger(UploadController.class);
     public static final String BUSINESS_NAME = "文件上传";
 
