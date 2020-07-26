@@ -93,7 +93,8 @@
                         v-bind:after-upload="afterUpload"></vod>
                   <div v-show="section.video" class="row">
                     <div class="col-md-9">
-                      <video v-bind:src="section.video" id="video" controls="controls"></video>
+                      <player ref="player"></player>
+                      <video v-bind:src="section.video" id="video" controls="controls" class="hidden"></video>
                     </div>
                   </div>
                 </div>
@@ -146,8 +147,9 @@
   import Pagination from "../../components/pagination";
   import BigFile from "../../components/big-file";
   import Vod from "../../components/vod";
+  import Player from "../../components/player";
   export default {
-    components: {Pagination, BigFile,Vod},
+    components: {Pagination, BigFile,Vod,Player},
     name: "business-section",
     data: function() {
       return {
@@ -271,6 +273,7 @@
         let vod = resp.content.vod;
         _this.section.video = video;
         _this.section.vod = vod;
+        _this.$refs.player.playUrl(video);
         _this.getTime();
       },
 
