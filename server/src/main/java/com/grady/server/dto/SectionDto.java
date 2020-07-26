@@ -46,8 +46,10 @@ public class SectionDto {
     private Integer sort;
 
     /**
-    * 
+    * 阿里云vod
     */
+    private String vod;
+
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createdAt;
 
@@ -56,11 +58,6 @@ public class SectionDto {
     */
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updatedAt;
-
-    /**
-    * vod|阿里云vod
-    */
-    private String vod;
 
     public String getId() {
     return id;
