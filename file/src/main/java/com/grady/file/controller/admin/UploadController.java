@@ -1,18 +1,25 @@
 package com.grady.file.controller.admin;
 
+import com.alibaba.fastjson.JSON;
+import com.aliyuncs.DefaultAcsClient;
+import com.aliyuncs.exceptions.ClientException;
+import com.aliyuncs.vod.model.v20170321.GetMezzanineInfoResponse;
 import com.grady.server.dto.FileDto;
 import com.grady.server.dto.ResponseDto;
 import com.grady.server.enums.FileUseEnum;
 import com.grady.server.service.IFileService;
 import com.grady.server.util.Base64ToMultipartFile;
+import com.grady.server.util.VodUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.*;
+import java.lang.invoke.VolatileCallSite;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -34,6 +41,12 @@ public class UploadController {
 
     @Value("${file.path}")
     private String FILE_PATH;
+
+    @Value("${vod.accessKeySecret}")
+    private String accessKeySecret;
+
+    @Value("${vod.accessKeyId}")
+    private String accessKeyId;
 
     @Resource
     private IFileService fileService;
@@ -88,11 +101,21 @@ public class UploadController {
 
 
     @GetMapping("/check/{key}")
-    public ResponseDto check(@PathVariable String key){
+    public ResponseDto check(@PathVariable String key) throws Exception {
+        LOG.info("检查上传分片开始：{}", key);
         ResponseDto responseDto = new ResponseDto();
         FileDto fileDto = fileService.findKey(key);
         if (fileDto != null){
-            fileDto.setPath(FILE_DOMAIN + fileDto.getPath());
+            if (StringUtils.isEmpty(fileDto.getVod())){
+                fileDto.setPath(FILE_DOMAIN + fileDto.getPath());
+            }else {
+                DefaultAcsClient client = VodUtil.initVodClient(accessKeyId,accessKeySecret);
+                GetMezzanineInfoResponse response = VodUtil.getMezzanineInfo(client,fileDto.getVod());
+                System.out.println("获取视频信息，response:{}"+JSON.toJSONString(response));
+                String fileUrl = response.getMezzanine().getFileURL();
+                fileDto.setPath(fileUrl);
+            }
+
         }
         responseDto.setContent(fileDto);
         return responseDto;

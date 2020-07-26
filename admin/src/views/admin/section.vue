@@ -219,7 +219,9 @@
       save() {
         let _this = this;
 
+        //保存之前将视频清空
         _this.section.video = "";
+
         // 保存校验
         if (1 != 1
           || !Validator.require(_this.section.title, "标题")
