@@ -3,8 +3,7 @@ package com.grady.server.util;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.aliyun.oss.OSSClient;
-import com.aliyun.oss.model.AppendObjectRequest;
-import com.aliyun.oss.model.ObjectMetadata;
+
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.http.FormatType;
@@ -147,6 +146,12 @@ public class VodUtil {
         return client.getAcsResponse(request);
     }
 
+    public static GetVideoPlayAuthResponse getVideoPlayAuth(DefaultAcsClient client, String videoId) throws ClientException {
+        GetVideoPlayAuthRequest request = new GetVideoPlayAuthRequest();
+        request.setVideoId(videoId);
+        return client.getAcsResponse(request);
+    }
+
     public static void main(String[] argv) {
         //您的AccessKeyId
         String accessKeyId = "LTAI4FnmXZVs9Pufn8kt2whV";
@@ -178,5 +183,6 @@ public class VodUtil {
             System.out.println("上传视频失败, ErrorMessage : " + e.getLocalizedMessage());
         }
     }
+
 
 }
