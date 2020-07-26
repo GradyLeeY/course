@@ -48,8 +48,8 @@ public class VodUtil {
         //request.setDescription("this is desc");
         //request.setTags("tag1,tag2");
         //request.setCoverURL("http://vod.aliyun.com/test_cover_url.jpg");
-        //request.setCateId(-1L);
-        //request.setTemplateGroupId("");
+        request.setCateId(1000168862L);
+        request.setTemplateGroupId("215f523f5a58f9992f0c8d1a9535e0dc");
         //request.setWorkflowId("");
         //request.setStorageLocation("");
         //request.setAppId("app-1000000");
