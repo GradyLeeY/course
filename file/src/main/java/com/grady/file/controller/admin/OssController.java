@@ -34,10 +34,10 @@ public class OssController {
 
     private static final Logger LOG = LoggerFactory.getLogger(FileController.class);
 
-    @Value("${accessKeyId}")
+    @Value("${oss.accessKeyId}")
     private String accessKeyId;
 
-    @Value("${accessKeySecret}")
+    @Value("${oss.accessKeySecret}")
     private String accessKeySecret;
 
     @Value("${endpoint}")

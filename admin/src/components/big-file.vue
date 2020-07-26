@@ -124,7 +124,6 @@
             Toast.warning("文件上传失败");
             $("#" + _this.inputId + "-input").val("");
           }
-
         });
       },
 

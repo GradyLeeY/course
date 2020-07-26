@@ -19,8 +19,13 @@ file:
   domain: http://127.0.0.1:9000/file/f/
 
 #oss
-accessKeyId: LTAI4GKCEgGRvFBxkwzLpv2c
-accessKeySecret: VoeKD8tF3RNqxLe3BhtcfLXeAq0Rxo
+oss.accessKeyId: LTAI4GKCEgGRvFBxkwzLpv2c
+vod.accessKeyId: LTAI4GBtnYvqgVkGKZj4uvBz
+
+oss.accessKeySecret: VoeKD8tF3RNqxLe3BhtcfLXeAq0Rxo
+vod.accessKeySecret: BHlNwmbpe5kj9IHVMjw3h1bNQq4Xu8
+
+
 endpoint: http://oss-cn-shanghai.aliyuncs.com
 ossDomain: http://grady.oss-cn-shanghai.aliyuncs.com/
 bucket: grady
