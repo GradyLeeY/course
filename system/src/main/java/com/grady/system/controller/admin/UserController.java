@@ -1,5 +1,6 @@
 package com.grady.system.controller.admin;
 
+import com.grady.server.dto.LoginUserDto;
 import com.grady.server.dto.UserDto;
 import com.grady.server.dto.PageDto;
 import com.grady.server.dto.ResponseDto;
@@ -65,10 +66,17 @@ public class UserController {
      */
     @PostMapping("/save-password")
     public ResponseDto savePassword(@RequestBody UserDto userDto) {
-        userDto.setPassword(DigestUtils.md5DigestAsHex(userDto.getPassword().getBytes()));
         ResponseDto responseDto = new ResponseDto();
         iuserService.savePassword(userDto);
         responseDto.setContent(userDto);
+        return responseDto;
+    }
+
+    @PostMapping("/login")
+    public ResponseDto login(@RequestBody UserDto userDto){
+        ResponseDto responseDto = new ResponseDto();
+        LoginUserDto login = iuserService.login(userDto);
+        responseDto.setContent(login);
         return responseDto;
     }
 }

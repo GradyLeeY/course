@@ -1,6 +1,7 @@
 package com.grady.server.service;
 
 import com.grady.server.domain.User;
+import com.grady.server.dto.LoginUserDto;
 import com.grady.server.dto.PageDto;
 import com.grady.server.dto.UserDto;
 
@@ -20,4 +21,6 @@ public interface IUserService {
     User selectByLoginname(String loginName);
 
     void savePassword(UserDto userDto);
+
+    LoginUserDto login(UserDto userDto);
 }

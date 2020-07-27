@@ -30,14 +30,14 @@
                       <fieldset>
                         <label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="text" class="form-control" placeholder="Username"/>
+															<input v-model="user.loginName" type="text" class="form-control" placeholder="请输入用户名"/>
 															<i class="ace-icon fa fa-user"></i>
 														</span>
                         </label>
 
                         <label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="password" class="form-control" placeholder="Password"/>
+															<input v-model="user.password" type="password" class="form-control" placeholder="请输入密码"/>
 															<i class="ace-icon fa fa-lock"></i>
 														</span>
                         </label>
@@ -92,13 +92,27 @@
 
   export default {
     name: 'login',
+    data: function(){
+      return{
+        user: {}
+      }
+    },
     mounted: function () {
         $('body').removeClass('no-skin');
         $('body').attr('class', 'login-layout light-login');
     },
     methods: {
         login(){
-          this.$router.push("/welcome")
+          let _this = this;
+          _this.user.password = hex_md5(_this.user.password+KEY);
+          _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/user/login',_this.user).then((response)=>{
+            let resp = response.data;
+            if (resp.success){
+              _this.$router.push("/welcome");
+            }else {
+              Toast.warning(resp.message);
+            }
+          });
         }
     }
   }

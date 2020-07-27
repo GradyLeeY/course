@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.grady.server.domain.User;
 import com.grady.server.domain.UserExample;
+import com.grady.server.dto.LoginUserDto;
 import com.grady.server.dto.UserDto;
 import com.grady.server.dto.PageDto;
 import com.grady.server.exception.BusinessException;
@@ -12,6 +13,8 @@ import com.grady.server.mapper.UserMapper;
 import com.grady.server.service.IUserService;
 import com.grady.server.util.CopyUtil;
 import com.grady.server.util.UuidUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.DigestUtils;
@@ -27,6 +30,7 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements IUserService {
 
+    private static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     @Resource
     private UserMapper userMapper;
 
@@ -64,10 +68,25 @@ public class UserServiceImpl implements IUserService {
         return users.get(0);
     }
 
+    public LoginUserDto login(UserDto userDto){
+        userDto.setPassword(DigestUtils.md5DigestAsHex(userDto.getPassword().getBytes()));
+        User userDb = selectByLoginname(userDto.getLoginName());
+        if (userDb == null){
+            throw new BusinessException(BusinessExceptionCode.LOGIN_ERROR);
+        }else {
+            if (userDb.getPassword().equals(userDto.getPassword())){
+                return CopyUtil.copy(userDb,LoginUserDto.class);
+            }else {
+                logger.info("数据库密码：{}，输入密码:{}",userDb.getPassword(),userDto.getPassword());
+                throw new BusinessException(BusinessExceptionCode.LOGIN_ERROR);
+            }
+        }
+    }
+
     public void savePassword(UserDto userDto){
         User user = new User();
         user.setId(userDto.getId());
-        user.setPassword(userDto.getPassword());
+        user.setPassword(DigestUtils.md5DigestAsHex(userDto.getPassword().getBytes()));
         userMapper.updateByPrimaryKeySelective(user);
     }
 
