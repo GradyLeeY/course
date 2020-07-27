@@ -6,16 +6,17 @@ import com.grady.server.domain.User;
 import com.grady.server.domain.UserExample;
 import com.grady.server.dto.UserDto;
 import com.grady.server.dto.PageDto;
+import com.grady.server.exception.BusinessException;
+import com.grady.server.exception.BusinessExceptionCode;
 import com.grady.server.mapper.UserMapper;
 import com.grady.server.service.IUserService;
 import com.grady.server.util.CopyUtil;
 import com.grady.server.util.UuidUtil;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 /**
  * @Author Grady
@@ -51,6 +52,16 @@ public class UserServiceImpl implements IUserService {
         }
     }
 
+    public User selectByLoginname(String loginName){
+        UserExample userExample = new UserExample();
+        userExample.createCriteria().andLoginNameEqualTo(loginName);
+        List<User> users = userMapper.selectByExample(userExample);
+        if (CollectionUtils.isEmpty(users)){
+            return null;
+        }
+        return users.get(0);
+    }
+
     @Override
     public void delete(String id){
         userMapper.deleteByPrimaryKey(id);
@@ -62,6 +73,11 @@ public class UserServiceImpl implements IUserService {
 
     private void insert(User user) {
         user.setId(UuidUtil.getShortUuid());
+        User userDb = selectByLoginname(user.getLoginName());
+        if(userDb != null){
+            throw new BusinessException(BusinessExceptionCode.USER_LOGIN_NAME_EXIST);
+        }
         userMapper.insert(user);
     }
+
 }
