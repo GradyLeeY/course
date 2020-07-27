@@ -64,13 +64,22 @@ public class UserServiceImpl implements IUserService {
         return users.get(0);
     }
 
+    public void savePassword(UserDto userDto){
+        User user = new User();
+        user.setId(userDto.getId());
+        user.setPassword(userDto.getPassword());
+        userMapper.updateByPrimaryKeySelective(user);
+    }
+
     @Override
     public void delete(String id){
         userMapper.deleteByPrimaryKey(id);
     }
 
     private void update(User user) {
-        userMapper.updateByPrimaryKey(user);
+        user.setPassword(null);
+        //有值就更新，没值就不更新
+        userMapper.updateByPrimaryKeySelective(user);
     }
 
     private void insert(User user) {
