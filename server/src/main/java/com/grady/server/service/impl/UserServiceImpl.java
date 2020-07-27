@@ -14,6 +14,7 @@ import com.grady.server.util.CopyUtil;
 import com.grady.server.util.UuidUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -44,6 +45,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public void save(UserDto userDto){
+        userDto.setPassword(DigestUtils.md5DigestAsHex(userDto.getPassword().getBytes()));
         User user = CopyUtil.copy(userDto,User.class);
         if (StringUtils.isEmpty(userDto.getId())){
             this.insert(user);
