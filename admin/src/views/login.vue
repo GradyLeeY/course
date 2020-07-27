@@ -108,6 +108,7 @@
           _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/user/login',_this.user).then((response)=>{
             let resp = response.data;
             if (resp.success){
+              Tool.setLoginUser(resp.content);
               _this.$router.push("/welcome");
             }else {
               Toast.warning(resp.message);
