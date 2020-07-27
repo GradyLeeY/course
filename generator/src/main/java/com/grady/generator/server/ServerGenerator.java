@@ -19,7 +19,7 @@ import java.util.*;
  */
 public class ServerGenerator {
     //windows
-    static String MODULE = "business";
+    static String MODULE = "system";
     static String toDtoPath = "server\\src\\main\\java\\com\\grady\\server\\dto\\";
     static String toServicePath = "server\\src\\main\\java\\com\\grady\\server\\service\\impl\\";
     static String toControllerPath = MODULE+"\\src\\main\\java\\com\\grady\\"+MODULE+"\\controller\\admin\\";
@@ -65,15 +65,15 @@ public class ServerGenerator {
         map.put("typeSet", typeSet);
 
         // 生成dto
-        FreemarkerUtil.initConfig("dto.ftl");
+       /* FreemarkerUtil.initConfig("dto.ftl");
         FreemarkerUtil.generator(toDtoPath + Domain + "Dto.java", map);
         // 生成service
         FreemarkerUtil.initConfig("service.ftl");
-        FreemarkerUtil.generator(toServicePath + Domain + "ServiceImpl.java", map);
+        FreemarkerUtil.generator(toServicePath + Domain + "ServiceImpl.java", map);*/
 
         // 生成controller
-        /*FreemarkerUtil.initConfig("controller.ftl");
-        FreemarkerUtil.generator(toControllerPath + Domain + "Controller.java", map);*/
+        FreemarkerUtil.initConfig("controller.ftl");
+        FreemarkerUtil.generator(toControllerPath + Domain + "Controller.java", map);
     }
 
     /**
