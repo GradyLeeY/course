@@ -519,6 +519,7 @@
       // console.log("admin");
       // sidebar激活样式方法二
       _this.activeSidebar(_this.$route.name.replace("/", "-") + "-sidebar");
+      $.getScript('/ace/assets/js/ace.min.js');
     },
     watch: {
       $route: {
@@ -528,6 +529,7 @@
           let _this = this;
           _this.$nextTick(function(){  //页面加载完成后执行
             _this.activeSidebar(_this.$route.name.replace("/", "-") + "-sidebar");
+
           })
         }
       }
