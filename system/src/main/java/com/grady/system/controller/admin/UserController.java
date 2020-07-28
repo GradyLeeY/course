@@ -1,9 +1,6 @@
 package com.grady.system.controller.admin;
 
-import com.grady.server.dto.LoginUserDto;
-import com.grady.server.dto.UserDto;
-import com.grady.server.dto.PageDto;
-import com.grady.server.dto.ResponseDto;
+import com.grady.server.dto.*;
 import com.grady.server.service.IUserService;
 import com.grady.server.util.ValidatorUtil;
 import org.slf4j.Logger;
@@ -12,6 +9,7 @@ import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/admin/user")
@@ -73,10 +71,18 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseDto login(@RequestBody UserDto userDto){
+    public ResponseDto login(@RequestBody UserDto userDto, HttpServletRequest request){
         ResponseDto responseDto = new ResponseDto();
         LoginUserDto login = iuserService.login(userDto);
+        request.getSession().setAttribute(Constants.LOGIN_USER,login);
         responseDto.setContent(login);
+        return responseDto;
+    }
+
+    @GetMapping("/logout")
+    public ResponseDto logout(HttpServletRequest request){
+        ResponseDto responseDto = new ResponseDto();
+        request.removeAttribute(Constants.LOGIN_USER);
         return responseDto;
     }
 }
