@@ -27,6 +27,7 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping("/admin/kaptcha")
 public class KaptchaController {
 
+    public static final String BUSINESS_NAME = "图片验证码";
 
     @Qualifier("getDefaultKaptcha")
     @Autowired

@@ -15,6 +15,16 @@ public class LoginUserDto {
     //昵称
     private String name;
 
+    private String token;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     public String getId() {
         return id;
     }
@@ -45,6 +55,7 @@ public class LoginUserDto {
         sb.append("id='").append(id).append('\'');
         sb.append(", loginName='").append(loginName).append('\'');
         sb.append(", name='").append(name).append('\'');
+        sb.append(", token='").append(token).append('\'');
         sb.append('}');
         return sb.toString();
     }
