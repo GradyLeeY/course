@@ -2,28 +2,33 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: system
-          predicates:
-            - args:
-                - /system/**
-              name: Path
-          uri: http://127.0.0.1:9001
-        - id: business
-          predicates:
-            - args:
-                - /business/**
-              name: Path
-          uri: lb://business
-        - id: file
-          predicates:
-            - args:
-                - /file/**
-              name: Path
-          uri: lb://file
-
-server:
-  port: 9000
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
+      - filters:
+        - args:
+          - true
+          name: LoginAdmin
+        id: system
+        predicates:
+        - args:
+          - /system/**
+          name: Path
+        uri: http://127.0.0.1:9001
+      - filters:
+        - args:
+          - true
+          name: LoginAdmin
+        id: business
+        predicates:
+        - args:
+          - /business/**
+          name: Path
+        uri: lb://business
+      - filters:
+        - args:
+          - true
+          name: LoginAdmin
+        id: file
+        predicates:
+        - args:
+          - /file/**
+          name: Path
+        uri: lb://file
