@@ -17,7 +17,7 @@ Tool = {
    * @returns {boolean}
    */
   isNotEmpty: function (obj) {
-    return !this.isEmpty();
+    return !this.isEmpty(obj);
   },
   /**
    * 长度校验
