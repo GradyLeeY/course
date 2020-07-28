@@ -46,8 +46,8 @@
 
                         <div class="clearfix">
                           <label class="inline">
-                            <input type="checkbox" class="ace"/>
-                            <span class="lbl"> Remember Me</span>
+                            <input v-model="remember" type="checkbox" class="ace"/>
+                            <span class="lbl"> 记住我</span>
                           </label>
 
                           <button type="button" class="width-35 pull-right btn btn-sm btn-primary" v-on:click="login()">
@@ -94,21 +94,40 @@
     name: 'login',
     data: function(){
       return{
-        user: {}
+        user: {},
+        remember: true
       }
     },
     mounted: function () {
+      let _this = this;
+
         $('body').removeClass('no-skin');
         $('body').attr('class', 'login-layout light-login');
+
+      let rememberUser = LocalStorage.get(LOCAL_KEY_REMEMBER_USER);
+      if (rememberUser){
+        _this.user = rememberUser;
+      }
     },
     methods: {
         login(){
           let _this = this;
+          let passwordShow = _this.user.password;
           _this.user.password = hex_md5(_this.user.password+KEY);
           _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/user/login',_this.user).then((response)=>{
             let resp = response.data;
             if (resp.success){
+              let loginUser = resp.content;
+
               Tool.setLoginUser(resp.content);
+              if (_this.remember){
+                LocalStorage.set(LOCAL_KEY_REMEMBER_USER,{
+                  loginName:loginUser.loginName,
+                  password: passwordShow
+                });
+              }else {
+                LocalStorage.set(LOCAL_KEY_REMEMBER_USER,null);
+              }
               _this.$router.push("/welcome");
             }else {
               Toast.warning(resp.message);
