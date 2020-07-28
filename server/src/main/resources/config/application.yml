@@ -4,6 +4,10 @@ spring:
     url: jdbc:mysql://localhost:3306/gradycource?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
     username: root
     password: root
+  redis:
+    host: r-uf6ljbcdaxobsifyctpd.redis.rds.aliyuncs.com
+    port: 6379
+    password: Redis000
 
 logging:
   level:
