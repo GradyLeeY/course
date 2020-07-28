@@ -6,6 +6,7 @@ import com.grady.server.util.ValidatorUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.DigestUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -72,7 +73,24 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseDto login(@RequestBody UserDto userDto, HttpServletRequest request){
+        LOG.info("用户登录开始");
         ResponseDto responseDto = new ResponseDto();
+        // 根据验证码token去获取会话中的验证码，和用户输入的验证码是否一致
+        String imageCode = (String) request.getSession().getAttribute(userDto.getImageCodeToken());
+        LOG.info("缓存中的code:{}",imageCode);
+        if (StringUtils.isEmpty(imageCode)){
+            responseDto.setSuccess(false);
+            responseDto.setMessage("请输入验证码");
+            return responseDto;
+        }
+        if (!imageCode.toLowerCase().equals(userDto.getImageCode().toLowerCase())){
+            responseDto.setSuccess(false);
+            responseDto.setMessage("验证码不正确");
+            return responseDto;
+        }else {
+            // 验证通过后，移除验证码
+            request.getSession().removeAttribute(userDto.getImageCodeToken());
+        }
         LoginUserDto login = iuserService.login(userDto);
         request.getSession().setAttribute(Constants.LOGIN_USER,login);
         responseDto.setContent(login);
