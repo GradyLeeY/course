@@ -112,8 +112,13 @@
     methods: {
         login(){
           let _this = this;
-          let passwordShow = _this.user.password;
-          _this.user.password = hex_md5(_this.user.password+KEY);
+          let checkPass = hex_md5(_this.user.password);
+          let rememberPass = LocalStorage.get(LOCAL_KEY_REMEMBER_USER) || {};
+          //如果密码是从缓存中带出来的就不需要验证
+          if (checkPass !== rememberPass.checkPass){
+            _this.user.password = hex_md5(_this.user.password+KEY);
+          }
+
           _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/user/login',_this.user).then((response)=>{
             let resp = response.data;
             if (resp.success){
@@ -121,9 +126,11 @@
 
               Tool.setLoginUser(resp.content);
               if (_this.remember){
+                let checkPass = hex_md5(_this.user.password);
                 LocalStorage.set(LOCAL_KEY_REMEMBER_USER,{
                   loginName:loginUser.loginName,
-                  password: passwordShow
+                  password: _this.user.password,
+                  checkPass: checkPass
                 });
               }else {
                 LocalStorage.set(LOCAL_KEY_REMEMBER_USER,null);
