@@ -48,6 +48,7 @@ public class LoginAdminGatewayFilter implements GatewayFilter, Ordered {
             return exchange.getResponse().setComplete();
         }
         Object o = redisTemplate.opsForValue().get("token");
+        LOG.info("redis中的token:{}", o);
         if (o == null){
             LOG.warn("token无效，请求被拦截");
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);

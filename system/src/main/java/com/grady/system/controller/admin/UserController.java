@@ -11,6 +11,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import sun.rmi.runtime.Log;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -78,7 +79,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseDto login(@RequestBody UserDto userDto, HttpServletRequest request){
+    public ResponseDto login(@RequestBody UserDto userDto){
         LOG.info("用户登录开始");
         ResponseDto responseDto = new ResponseDto();
         // 根据验证码token去获取会话中的验证码，和用户输入的验证码是否一致
@@ -100,6 +101,7 @@ public class UserController {
         }
         LoginUserDto login = iuserService.login(userDto);
         String token = UuidUtil.getShortUuid();
+        LOG.info("redis中的token:{}",token);
         login.setToken(token);
         redisTemplate.opsForValue().set(token, JSON.toJSONString(login), 36000, TimeUnit.SECONDS);
         responseDto.setContent(login);

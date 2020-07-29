@@ -128,7 +128,7 @@
           Loading.hide();
           let resp = response.data;
           if (resp.success) {
-            console.log("登录成功：", resp.content);
+            console.log("登录成功,返回的token:", resp.content.token);
             let loginUser = resp.content;
             Tool.setLoginUser(resp.content);
 

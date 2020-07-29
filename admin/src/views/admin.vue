@@ -378,11 +378,11 @@
                 <b class="arrow"></b>
               </li>
 
-              <li class="">
-                <a href="jqgrid.html">
+              <li class="" id="system-resource-sidebar">
+                <router-link to="/system/resource">
                   <i class="menu-icon fa fa-caret-right"></i>
-                  权限管理
-                </a>
+                  资源管理
+                </router-link>
 
                 <b class="arrow"></b>
               </li>
@@ -564,7 +564,7 @@
       logout () {
         let _this = this;
         Loading.show();
-        _this.$ajax.get(process.env.VUE_APP_SERVER + '/system/admin/user/logout/'+_this.loginUser.token).then((response)=>{
+        _this.$ajax.get(process.env.VUE_APP_SERVER + '/system/admin/user/logout/' + _this.loginUser.token).then((response)=>{
           Loading.hide();
           let resp = response.data;
           if (resp.success) {
