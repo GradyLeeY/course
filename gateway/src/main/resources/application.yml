@@ -1,4 +1,12 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+server:
+  port: 9000
 spring:
+  application:
+    name: gateway
   cloud:
     gateway:
       routes:
@@ -21,7 +29,7 @@ spring:
         - args:
           - /business/**
           name: Path
-        uri: lb://business
+        uri: http://127.0.0.1:9002
       - filters:
         - args:
           - true
@@ -32,3 +40,7 @@ spring:
           - /file/**
           name: Path
         uri: lb://file
+  redis:
+    host: r-uf6ljbcdaxobsifyctpd.redis.rds.aliyuncs.com
+    password: Redis000
+    port: 6379
