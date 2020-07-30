@@ -1,26 +1,25 @@
 package com.grady.system.controller.admin;
 
-import com.grady.server.dto.ResourceDto;
+import com.grady.server.dto.RoleDto;
 import com.grady.server.dto.PageDto;
 import com.grady.server.dto.ResponseDto;
-import com.grady.server.service.IResourceService;
+import com.grady.server.service.IRoleService;
 import com.grady.server.util.ValidatorUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 @RestController
-@RequestMapping("/admin/resource")
-public class ResourceController {
+@RequestMapping("/admin/role")
+public class RoleController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ResourceController.class);
-    public static final String BUSINESS_NAME = "资源";
+    private static final Logger LOG = LoggerFactory.getLogger(RoleController.class);
+    public static final String BUSINESS_NAME = "角色";
 
     @Resource
-    private IResourceService iresourceService;
+    private IRoleService iroleService;
 
     /**
      * 列表查询
@@ -28,7 +27,7 @@ public class ResourceController {
     @PostMapping("/list")
     public ResponseDto list(@RequestBody PageDto pageDto) {
         ResponseDto responseDto = new ResponseDto();
-        iresourceService.list(pageDto);
+        iroleService.list(pageDto);
         responseDto.setContent(pageDto);
         return responseDto;
     }
@@ -37,31 +36,26 @@ public class ResourceController {
      * 保存，id有值时更新，无值时新增
      */
     @PostMapping("/save")
-    public ResponseDto save(@RequestBody String jsonStr) {
+    public ResponseDto save(@RequestBody RoleDto roleDto) {
         // 保存校验
-        ValidatorUtil.require(jsonStr, "资源");
+        ValidatorUtil.require(roleDto.getName(), "角色");
+        ValidatorUtil.length(roleDto.getName(), "角色", 1, 50);
+        ValidatorUtil.require(roleDto.getDesc(), "描述");
+        ValidatorUtil.length(roleDto.getDesc(), "描述", 1, 100);
 
         ResponseDto responseDto = new ResponseDto();
-        iresourceService.saveJson(jsonStr);
+        iroleService.save(roleDto);
+        responseDto.setContent(roleDto);
         return responseDto;
     }
-    /**
-     * 资源树查询
-     */
-    @GetMapping("/load-tree")
-    public ResponseDto loadTree() {
-        ResponseDto responseDto = new ResponseDto();
-        List<ResourceDto> resourceDtoList = iresourceService.loadTree();
-        responseDto.setContent(resourceDtoList);
-        return responseDto;
-    }
+
     /**
      * 删除
      */
     @DeleteMapping("/delete/{id}")
     public ResponseDto delete(@PathVariable String id) {
         ResponseDto responseDto = new ResponseDto();
-        iresourceService.delete(id);
+        iroleService.delete(id);
         return responseDto;
     }
 }
