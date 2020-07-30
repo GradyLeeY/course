@@ -15,4 +15,6 @@ public interface IResourceService {
     void save(ResourceDto resourceDto);
 
     void delete(String id);
+
+    void saveJson(String json);
 }
