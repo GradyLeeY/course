@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin/role")
@@ -56,6 +57,23 @@ public class RoleController {
     public ResponseDto delete(@PathVariable String id) {
         ResponseDto responseDto = new ResponseDto();
         iroleService.delete(id);
+        return responseDto;
+    }
+
+    @PostMapping("/save-resource")
+    public ResponseDto saveResource(@RequestBody RoleDto roleDto){
+        ResponseDto<RoleDto> responseDto = new ResponseDto<>();
+        iroleService.saveResource(roleDto);
+        responseDto.setContent(roleDto);
+        return responseDto;
+    }
+
+    @GetMapping("/list-resource/{roleId}")
+    public ResponseDto listResource(@PathVariable String roleId){
+        ResponseDto responseDto = new ResponseDto();
+
+        List<String> resourceIds = iroleService.listResource(roleId);
+        responseDto.setContent(resourceIds);
         return responseDto;
     }
 }

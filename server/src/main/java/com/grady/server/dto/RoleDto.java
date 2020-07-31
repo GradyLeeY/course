@@ -1,6 +1,8 @@
 package com.grady.server.dto;
 
 
+import java.util.List;
+
 public class RoleDto {
 
     /**
@@ -17,6 +19,16 @@ public class RoleDto {
     * 描述
     */
     private String desc;
+
+    private List<String> resourceIds;
+
+    public List<String> getResourceIds() {
+        return resourceIds;
+    }
+
+    public void setResourceIds(List<String> resourceIds) {
+        this.resourceIds = resourceIds;
+    }
 
     public String getId() {
     return id;
@@ -43,17 +55,15 @@ public class RoleDto {
     }
 
 
-@Override
-public String toString() {
-StringBuilder sb = new StringBuilder();
-sb.append(getClass().getSimpleName());
-sb.append(" [");
-sb.append("Hash = ").append(hashCode());
-    sb.append(", id=").append(id);
-    sb.append(", name=").append(name);
-    sb.append(", desc=").append(desc);
-sb.append("]");
-return sb.toString();
-}
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("RoleDto{");
+        sb.append("id='").append(id).append('\'');
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", desc='").append(desc).append('\'');
+        sb.append(", resourceIds=").append(resourceIds);
+        sb.append('}');
+        return sb.toString();
+    }
 
 }

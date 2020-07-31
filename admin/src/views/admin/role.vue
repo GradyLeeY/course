@@ -119,7 +119,6 @@
     },
     mounted: function() {
       let _this = this;
-      _this.$refs.pagination.size = 5;
       _this.list(1);
       // sidebar激活样式方法一
       // this.$parent.activeSidebar("system-role-sidebar");
@@ -232,6 +231,7 @@
           _this.resources = response.content;
           // 初始化树
           _this.initTree();
+          _this.listRoleResource();
         })
       },
 
@@ -257,6 +257,42 @@
         _this.zTree = $.fn.zTree.init($("#tree"), setting, _this.resources);
         _this.zTree.expandAll(true);
       },
+
+      saveResource(){
+        let _this = this;
+        let resources = _this.zTree.getCheckedNodes();
+        console.log("勾选的资源",resources);
+        let resourceIds = [];
+        for (let i = 0;i<resources.length;i++){
+          resourceIds.push(resources[i].id);
+        }
+        _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/role/save-resource',{
+          id: _this.role.id,
+          resourceIds: resourceIds
+        }).then((response)=>{
+          let resp = response.data;
+          if (resp.success){
+            Toast.success("保存成功!");
+            $("#resource-modal").modal("hide");
+          }else {
+            Toast.warning("保存失败");
+          }
+        });
+      },
+
+      listRoleResource(){
+        let _this = this;
+        _this.$ajax.get(process.env.VUE_APP_SERVER + '/system/admin/role/list-resource/' + _this.role.id).then((response)=>{
+          let resp = response.data;
+          let resources = resp.content;
+          _this.zTree.checkAllNodes(false);
+
+          for (let i = 0; i < resources.length; i++) {
+            let node = _this.zTree.getNodeByParam("id",resources[i]);
+            _this.zTree.checkNode(node,true);
+          }
+        });
+      }
     }
   }
 </script>
