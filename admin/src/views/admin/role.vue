@@ -31,6 +31,9 @@
         <td>{{role.desc}}</td>
       <td>
         <div class="hidden-sm hidden-xs btn-group">
+          <button v-on:click="editUser(role)" class="btn btn-xs btn-info">
+            <i class="ace-icon fa fa-user bigger-120"></i>
+          </button>
           <button v-on:click="editResource(role)" class="btn btn-xs btn-info">
             <i class="ace-icon fa fa-list bigger-120"></i>
           </button>
@@ -101,6 +104,60 @@
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
+    <!-- 角色用户关联配置 -->
+    <div id="user-modal" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">角色用户关联配置</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6">
+                <table id="user-table" class="table table-hover">
+                  <tbody>
+                  <tr v-for="user in users">
+                    <td>{{user.loginName}}</td>
+                    <td class="text-right">
+                      <a href="javascript:;" class="">
+                        <i class="ace-icon fa fa-arrow-circle-right blue"></i>
+                      </a>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="col-md-6">
+                <table id="role-user-table" class="table table-hover">
+                  <tbody>
+                  <tr v-for="user in roleUsers">
+                    <td>{{user.loginName}}</td>
+                    <td class="text-right">
+                      <a href="javascript:;" class="">
+                        <i class="ace-icon fa fa-trash blue"></i>
+                      </a>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-white btn-default btn-round" data-dismiss="modal">
+              <i class="ace-icon fa fa-times"></i>
+              关闭
+            </button>
+            <button type="button" class="btn btn-white btn-info btn-round" v-on:click="saveUser()">
+              <i class="ace-icon fa fa-plus blue"></i>
+              保存
+            </button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
   </div>
 </template>
 
@@ -115,10 +172,13 @@
         roles: [],
         resources: [],
         zTree: {},
+        users: [],
+        roleUsers: []
       }
     },
     mounted: function() {
       let _this = this;
+      _this.$refs.pagination.size = 5;
       _this.list(1);
       // sidebar激活样式方法一
       // this.$parent.activeSidebar("system-role-sidebar");
@@ -258,41 +318,79 @@
         _this.zTree.expandAll(true);
       },
 
-      saveResource(){
+      /**
+       * 资源模态框点击【保存】
+       */
+      saveResource() {
         let _this = this;
         let resources = _this.zTree.getCheckedNodes();
-        console.log("勾选的资源",resources);
+        console.log("勾选的资源：", resources);
+
+        // 保存时，只需要保存资源id，所以使用id数组进行参数传递
         let resourceIds = [];
-        for (let i = 0;i<resources.length;i++){
+        for (let i = 0; i < resources.length; i++) {
           resourceIds.push(resources[i].id);
         }
-        _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/role/save-resource',{
+
+        _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/role/save-resource', {
           id: _this.role.id,
           resourceIds: resourceIds
         }).then((response)=>{
           let resp = response.data;
-          if (resp.success){
+          if (resp.success) {
             Toast.success("保存成功!");
-            $("#resource-modal").modal("hide");
-          }else {
-            Toast.warning("保存失败");
+          } else {
+            Toast.warning(resp.message);
           }
         });
       },
 
-      listRoleResource(){
+      /**
+       * 加载角色资源关联记录
+       */
+      listRoleResource() {
         let _this = this;
         _this.$ajax.get(process.env.VUE_APP_SERVER + '/system/admin/role/list-resource/' + _this.role.id).then((response)=>{
           let resp = response.data;
           let resources = resp.content;
-          _this.zTree.checkAllNodes(false);
 
+          // 勾选查询到的资源：先把树的所有节点清空勾选，再勾选查询到的节点
+          _this.zTree.checkAllNodes(false);
           for (let i = 0; i < resources.length; i++) {
-            let node = _this.zTree.getNodeByParam("id",resources[i]);
-            _this.zTree.checkNode(node,true);
+            let node = _this.zTree.getNodeByParam("id", resources[i]);
+            _this.zTree.checkNode(node, true);
           }
         });
-      }
+      },
+
+      /**
+       * 点击【用户】
+       */
+      editUser(role) {
+        let _this = this;
+        _this.role = $.extend({}, role);
+        _this.listUser();
+        $("#user-modal").modal("show");
+      },
+
+      /**
+       * 查询所有用户
+       */
+      listUser() {
+        let _this = this;
+        _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/user/list', {
+          page: 1,
+          size: 9999
+        }).then((response)=>{
+          let resp = response.data;
+          if (resp.success) {
+            _this.users = resp.content.list;
+            console.log(_this.users)
+          } else {
+            Toast.warning(resp.message);
+          }
+        })
+      },
     }
   }
 </script>
