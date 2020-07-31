@@ -1,6 +1,7 @@
 package com.grady.server.service;
 
 import com.grady.server.dto.PageDto;
+import com.grady.server.dto.RoleDto;
 import com.grady.server.dto.RoleUserDto;
 
 /**
@@ -15,4 +16,6 @@ public interface IRoleUserService {
     public void save(RoleUserDto roleUserDto);
 
     public void delete(String id);
+
+
 }

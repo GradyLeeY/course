@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.grady.server.domain.RoleUser;
 import com.grady.server.domain.RoleUserExample;
+import com.grady.server.dto.RoleDto;
 import com.grady.server.dto.RoleUserDto;
 import com.grady.server.dto.PageDto;
 import com.grady.server.mapper.RoleUserMapper;
@@ -12,6 +13,7 @@ import com.grady.server.util.CopyUtil;
 import com.grady.server.util.UuidUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -27,6 +29,7 @@ public class RoleUserServiceImpl implements IRoleUserService {
 
     @Resource
     private RoleUserMapper roleUserMapper;
+
 
     @Override
     public void list(PageDto pageDto){
@@ -55,6 +58,7 @@ public class RoleUserServiceImpl implements IRoleUserService {
     public void delete(String id){
         roleUserMapper.deleteByPrimaryKey(id);
     }
+
 
     private void update(RoleUser roleUser) {
         roleUserMapper.updateByPrimaryKey(roleUser);

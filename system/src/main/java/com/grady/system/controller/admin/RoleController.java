@@ -76,4 +76,12 @@ public class RoleController {
         responseDto.setContent(resourceIds);
         return responseDto;
     }
+
+    @PostMapping("/ave-user")
+    public ResponseDto saveUser(@RequestBody RoleDto roleDto){
+        ResponseDto<RoleDto> responseDto = new ResponseDto<>();
+        iroleService.saveUser(roleDto);
+        responseDto.setContent(roleDto);
+        return responseDto;
+    }
 }

@@ -2,14 +2,12 @@ package com.grady.server.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.grady.server.domain.Role;
-import com.grady.server.domain.RoleExample;
-import com.grady.server.domain.RoleResource;
-import com.grady.server.domain.RoleResourceExample;
+import com.grady.server.domain.*;
 import com.grady.server.dto.RoleDto;
 import com.grady.server.dto.PageDto;
 import com.grady.server.mapper.RoleMapper;
 import com.grady.server.mapper.RoleResourceMapper;
+import com.grady.server.mapper.RoleUserMapper;
 import com.grady.server.service.IRoleService;
 import com.grady.server.util.CopyUtil;
 import com.grady.server.util.UuidUtil;
@@ -34,6 +32,9 @@ public class RoleServiceImpl implements IRoleService {
 
     @Resource
     private RoleResourceMapper roleResourceMapper;
+
+    @Resource
+    private RoleUserMapper roleUserMapper;
 
     @Override
     public void list(PageDto pageDto){
@@ -82,6 +83,24 @@ public class RoleServiceImpl implements IRoleService {
         }
     }
 
+    @Override
+    @Transactional
+    public void saveUser(RoleDto roleDto){
+        String roleId = roleDto.getId();
+        List<String> userIds = roleDto.getUserIds();
+
+        RoleUserExample example = new RoleUserExample();
+        example.createCriteria().andRoleIdEqualTo(roleId);
+        roleUserMapper.deleteByExample(example);
+
+        for (int i = 0; i < userIds.size(); i++) {
+            RoleUser roleUser = new RoleUser();
+            roleUser.setId(UuidUtil.getShortUuid());
+            roleUser.setRoleId(roleId);
+            roleUser.setUserId(userIds.get(i));
+            roleUserMapper.insert(roleUser);
+        }
+    }
     @Override
     public List<String> listResource(String roleId){
         RoleResourceExample roleResourceExample = new RoleResourceExample();

@@ -121,7 +121,7 @@
                   <tr v-for="user in users">
                     <td>{{user.loginName}}</td>
                     <td class="text-right">
-                      <a href="javascript:;" class="">
+                      <a v-on:click="addUser(user)" href="javascript:;" class="">
                         <i class="ace-icon fa fa-arrow-circle-right blue"></i>
                       </a>
                     </td>
@@ -135,7 +135,7 @@
                   <tr v-for="user in roleUsers">
                     <td>{{user.loginName}}</td>
                     <td class="text-right">
-                      <a href="javascript:;" class="">
+                      <a v-on:click="deleteUser(user)" href="javascript:;" class="">
                         <i class="ace-icon fa fa-trash blue"></i>
                       </a>
                     </td>
@@ -391,6 +391,51 @@
           }
         })
       },
+      /**
+       * 角色中添加用户
+       * @param user
+       */
+      addUser(user){
+        let _this = this;
+        let users = _this.roleUsers;
+
+        for (let i = 0; i < users.length; i++) {
+          if (user === users[i]){
+            return
+          }
+          _this.roleUsers.push(user);
+        }
+      },
+      deleteUser(user){
+        let _this = this;
+        Tool.removeObj(_this.roleUsers,user);
+      },
+
+      saveUser(){
+        let _this = this;
+
+        let users = _this.roleUsers;
+        let userIds = [];
+
+        //保存时只保存用户id，所以使用id数组进行参数传递
+
+        for (let i = 0; i < users; i++) {
+          userIds.push(users[i].id);
+        }
+
+        _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/role/save-user', {
+          id: _this.role.id,
+          userIds: userIds
+        }).then((response)=>{
+          console.log("保存角色用户结果：", response);
+          let resp = response.data;
+          if (resp.success){
+            Toast.success("保存成功");
+          }else {
+            Toast.warning(resp.message);
+          }
+        });
+      }
     }
   }
 </script>
