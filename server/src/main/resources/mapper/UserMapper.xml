@@ -186,6 +186,15 @@
     </set>
     where id = #{id,jdbcType=CHAR}
   </update>
+  <!-- 一个用户可以属于多个角色，配置的资源可能重复，所以用distinct去重 -->
+  <select id="findResources" resultType="com.grady.server.dto.ResourceDto">
+    select distinct r.id, r.`name`, r.page, r.request, r.parent
+    from role_user ru, role_resource rr, resource r
+    where ru.user_id = #{userId}
+      and ru.role_id = rr.role_id
+      and rr.resource_id = r.id
+    order by r.id asc
+  </select>
   <update id="updateByPrimaryKey" parameterType="com.grady.server.domain.User">
     update user
     set login_name = #{loginName,jdbcType=VARCHAR},
@@ -193,4 +202,5 @@
       `password` = #{password,jdbcType=CHAR}
     where id = #{id,jdbcType=CHAR}
   </update>
+
 </mapper>

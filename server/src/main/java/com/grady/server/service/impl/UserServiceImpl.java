@@ -1,10 +1,12 @@
 package com.grady.server.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.grady.server.domain.User;
 import com.grady.server.domain.UserExample;
 import com.grady.server.dto.LoginUserDto;
+import com.grady.server.dto.ResourceDto;
 import com.grady.server.dto.UserDto;
 import com.grady.server.dto.PageDto;
 import com.grady.server.exception.BusinessException;
@@ -21,6 +23,7 @@ import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.HashSet;
 import java.util.List;
 /**
  * @Author Grady
@@ -75,12 +78,39 @@ public class UserServiceImpl implements IUserService {
             throw new BusinessException(BusinessExceptionCode.LOGIN_ERROR);
         }else {
             if (userDb.getPassword().equals(userDto.getPassword())){
-                return CopyUtil.copy(userDb,LoginUserDto.class);
+                // 登录成功
+                LoginUserDto loginUserDto = CopyUtil.copy(userDb, LoginUserDto.class);
+                setAuth(loginUserDto);
+                return loginUserDto;
             }else {
                 logger.info("数据库密码：{}，输入密码:{}",userDb.getPassword(),userDto.getPassword());
                 throw new BusinessException(BusinessExceptionCode.LOGIN_ERROR);
             }
         }
+    }
+
+    /**
+     * 为登录用户读取权限
+     * @param loginUserDto
+     */
+    private void setAuth(LoginUserDto loginUserDto) {
+        List<ResourceDto> resources = userMapper.findResources(loginUserDto.getId());
+        loginUserDto.setResources(resources);
+
+        //整理所有权限的请求，用于接口拦截
+        HashSet<String> requestSet = new HashSet<>();
+        if (!CollectionUtils.isEmpty(resources)){
+            for (int i = 0; i < resources.size(); i++) {
+                ResourceDto resourceDto = new ResourceDto();
+                String arrayString = resourceDto.getRequest();
+                List<String> requestList = JSON.parseArray(arrayString, String.class);
+                if (!CollectionUtils.isEmpty(requestList)) {
+                    requestSet.addAll(requestList);
+                }
+            }
+        }
+        logger.info("有权限的请求:{}",requestSet);
+        loginUserDto.setRequest(requestSet);
     }
 
     public void savePassword(UserDto userDto){
@@ -94,6 +124,7 @@ public class UserServiceImpl implements IUserService {
     public void delete(String id){
         userMapper.deleteByPrimaryKey(id);
     }
+
 
     private void update(User user) {
         user.setPassword(null);
