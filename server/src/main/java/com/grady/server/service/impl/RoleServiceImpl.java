@@ -114,6 +114,25 @@ public class RoleServiceImpl implements IRoleService {
         return resourceIdList;
 
     }
+
+    /**
+     * 按角色加载用户
+     * @param roleId
+     * @return
+     */
+    @Override
+    public List<String> listUser(String roleId){
+        RoleUserExample userExample = new RoleUserExample();
+        userExample.createCriteria().andRoleIdEqualTo(roleId);
+        List<RoleUser> roleUsers = roleUserMapper.selectByExample(userExample);
+        List<String> userIdList = new ArrayList<>();
+        for (int i = 0; i < roleUsers.size(); i++) {
+            String userId = roleUsers.get(i).getUserId();
+            userIdList.add(userId);
+        }
+        return userIdList;
+    }
+
     private void update(Role role) {
         roleMapper.updateByPrimaryKey(role);
     }

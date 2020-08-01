@@ -77,11 +77,19 @@ public class RoleController {
         return responseDto;
     }
 
-    @PostMapping("/ave-user")
+    @PostMapping("/save-user")
     public ResponseDto saveUser(@RequestBody RoleDto roleDto){
         ResponseDto<RoleDto> responseDto = new ResponseDto<>();
         iroleService.saveUser(roleDto);
         responseDto.setContent(roleDto);
+        return responseDto;
+    }
+
+    @GetMapping("/list-user/{roleId}")
+    public ResponseDto listUser(@PathVariable String roleId){
+        ResponseDto responseDto = new ResponseDto();
+        List<String> listUser = iroleService.listUser(roleId);
+        responseDto.setContent(listUser);
         return responseDto;
     }
 }

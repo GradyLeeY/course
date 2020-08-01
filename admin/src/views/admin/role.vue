@@ -385,57 +385,85 @@
           let resp = response.data;
           if (resp.success) {
             _this.users = resp.content.list;
-            console.log(_this.users)
+            _this.listRoleUser();
           } else {
             Toast.warning(resp.message);
           }
         })
       },
+
       /**
-       * 角色中添加用户
-       * @param user
+       * 角色中增加用户
        */
-      addUser(user){
+      addUser(user) {
         let _this = this;
-        let users = _this.roleUsers;
 
+        // 如果当前要添加的用户在右边列表中已经有了，则不用再添加
+        let users = _this.roleUsers;
         for (let i = 0; i < users.length; i++) {
-          if (user === users[i]){
-            return
+          if (user === users[i]) {
+            return;
           }
-          _this.roleUsers.push(user);
         }
-      },
-      deleteUser(user){
-        let _this = this;
-        Tool.removeObj(_this.roleUsers,user);
+
+        _this.roleUsers.push(user);
       },
 
-      saveUser(){
+      /**
+       * 角色中删除用户
+       */
+      deleteUser(user) {
         let _this = this;
+        Tool.removeObj(_this.roleUsers, user);
+      },
 
+      /**
+       * 角色用户模态框点击【保存】
+       */
+      saveUser() {
+        let _this = this;
         let users = _this.roleUsers;
+
+        // 保存时，只需要保存用户id，所以使用id数组进行参数传递
         let userIds = [];
-
-        //保存时只保存用户id，所以使用id数组进行参数传递
-
-        for (let i = 0; i < users; i++) {
+        for (let i = 0; i < users.length; i++) {
           userIds.push(users[i].id);
         }
-
         _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/role/save-user', {
           id: _this.role.id,
           userIds: userIds
         }).then((response)=>{
           console.log("保存角色用户结果：", response);
           let resp = response.data;
-          if (resp.success){
-            Toast.success("保存成功");
-          }else {
+          if (resp.success) {
+            Toast.success("保存成功!");
+            $("#user-modal").modal("hide");
+          } else {
             Toast.warning(resp.message);
           }
+        })
+      },
+
+      /**
+       * 加载角色用户
+       */
+      listRoleUser() {
+        let _this = this;
+        _this.roleUsers = [];
+        _this.$ajax.get(process.env.VUE_APP_SERVER + '/system/admin/role/list-user/' + _this.role.id).then((res)=>{
+          let response = res.data;
+          let userIds = response.content;
+
+          // 根据加载到用户ID，到【所有用户数组：users】中查找用户对象，用于列表显示
+          for (let i = 0; i < userIds.length; i++) {
+            for (let j = 0; j < _this.users.length; j++) {
+              if (userIds[i] === _this.users[j].id) {
+                _this.roleUsers.push(_this.users[j]);
+              }
+            }
+          }
         });
-      }
+      },
     }
   }
 </script>

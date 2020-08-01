@@ -23,4 +23,6 @@ public interface IRoleService {
     public List<String> listResource(String roleId);
 
     public void saveUser(RoleDto roleDto);
+
+    public List<String> listUser(String roleId);
 }
