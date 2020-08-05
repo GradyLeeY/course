@@ -1,5 +1,7 @@
 package com.grady.gateway.filter;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -55,6 +57,26 @@ public class LoginAdminGatewayFilter implements GatewayFilter, Ordered {
             return exchange.getResponse().setComplete();
         }else {
             LOG.info("已登录{}",o);
+
+            //增加权限校验，全用JSON操作
+            boolean exist = false;
+            JSONObject loginUserDto = JSONObject.parseObject(String.valueOf(o));
+            JSONArray requests = loginUserDto.getJSONArray("requests");
+
+            for (int i = 0; i < requests.size(); i++) {
+                String request = (String) requests.get(i);
+                if(path.contains(request)){
+                    exist = true;
+                    break;
+                }
+            }
+            if (exist){
+                LOG.info("权限校验通过");
+            }else {
+                LOG.info("权限校验未通过");
+                exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+                return exchange.getResponse().setComplete();
+            }
             return chain.filter(exchange);
         }
     }
