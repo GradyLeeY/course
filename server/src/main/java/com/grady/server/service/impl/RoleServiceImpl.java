@@ -71,7 +71,7 @@ public class RoleServiceImpl implements IRoleService {
         List<String> resourceIds = roleDto.getResourceIds();
         //清空库中当前角色下的记录
         RoleResourceExample roleResourceExample = new RoleResourceExample();
-        roleResourceExample.createCriteria().andIdEqualTo(roleId);
+        roleResourceExample.createCriteria().andRoleIdEqualTo(roleId);
         roleResourceMapper.deleteByExample(roleResourceExample);
 
         for (int i = 0; i < resourceIds.size(); i++) {

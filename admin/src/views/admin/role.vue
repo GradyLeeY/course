@@ -86,7 +86,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">角色资源关联配置</h4>
+            <h4 class="modal-title" style="text-align: center">角色资源关联配置</h4>
           </div>
           <div class="modal-body">
             <ul id="tree" class="ztree"></ul>

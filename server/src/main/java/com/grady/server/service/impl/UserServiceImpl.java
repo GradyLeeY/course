@@ -96,12 +96,11 @@ public class UserServiceImpl implements IUserService {
     private void setAuth(LoginUserDto loginUserDto) {
         List<ResourceDto> resources = userMapper.findResources(loginUserDto.getId());
         loginUserDto.setResources(resources);
-
         //整理所有权限的请求，用于接口拦截
         HashSet<String> requestSet = new HashSet<>();
         if (!CollectionUtils.isEmpty(resources)){
             for (int i = 0; i < resources.size(); i++) {
-                ResourceDto resourceDto = new ResourceDto();
+                ResourceDto resourceDto = resources.get(i);
                 String arrayString = resourceDto.getRequest();
                 List<String> requestList = JSON.parseArray(arrayString, String.class);
                 if (!CollectionUtils.isEmpty(requestList)) {
@@ -110,7 +109,7 @@ public class UserServiceImpl implements IUserService {
             }
         }
         logger.info("有权限的请求:{}",requestSet);
-        loginUserDto.setRequest(requestSet);
+        loginUserDto.setRequests(requestSet);
     }
 
     public void savePassword(UserDto userDto){

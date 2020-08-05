@@ -10,45 +10,35 @@ import java.util.List;
  */
 public class LoginUserDto {
 
+    /**
+     * id
+     */
     private String id;
 
-    //登录名
+    /**
+     * 登陆名
+     */
     private String loginName;
 
-    //昵称
+    /**
+     * 昵称
+     */
     private String name;
 
+    /**
+     * 登录凭证
+     */
     private String token;
 
-    //所有资源，用于前端渲染控制
+    /**
+     * 所有资源，用于前端界面控制
+     */
     private List<ResourceDto> resources;
 
-    //所有资源中的请求，用于后端接口的拦截
-    private HashSet<String> request;
-
-    public List<ResourceDto> getResources() {
-        return resources;
-    }
-
-    public void setResources(List<ResourceDto> resources) {
-        this.resources = resources;
-    }
-
-    public HashSet<String> getRequest() {
-        return request;
-    }
-
-    public void setRequest(HashSet<String> request) {
-        this.request = request;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
+    /**
+     * 所有资源中的请求，用于后端接口拦截
+     */
+    private HashSet<String> requests;
 
     public String getId() {
         return id;
@@ -74,6 +64,30 @@ public class LoginUserDto {
         this.name = name;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public List<ResourceDto> getResources() {
+        return resources;
+    }
+
+    public void setResources(List<ResourceDto> resources) {
+        this.resources = resources;
+    }
+
+    public HashSet<String> getRequests() {
+        return requests;
+    }
+
+    public void setRequests(HashSet<String> requests) {
+        this.requests = requests;
+    }
+
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("LoginUserDto{");
@@ -82,8 +96,9 @@ public class LoginUserDto {
         sb.append(", name='").append(name).append('\'');
         sb.append(", token='").append(token).append('\'');
         sb.append(", resources=").append(resources);
-        sb.append(", request=").append(request);
+        sb.append(", requests=").append(requests);
         sb.append('}');
         return sb.toString();
     }
+
 }
